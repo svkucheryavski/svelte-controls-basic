@@ -37,6 +37,7 @@ Every control is typically placed inside a `Container`, which provides layout (l
 </Container>
 ```
 
+[Check this example](https://svelte.dev/playground/ebbd1231a7a947e287d1dd2f8452ddda?version=latest) in Svelte REPL.
 
 ## Components
 
