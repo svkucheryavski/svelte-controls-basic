@@ -11,9 +11,6 @@
    "devDependencies": {
       "svelte": "^5.x.x"
    },
-   "dependencies": {
-      "mdatools": "^1.x.x"
-   },
    "keywords": [
       "svelte",
       "controls"
