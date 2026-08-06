@@ -1,5 +1,5 @@
 <!--
-@component File selector with icons an text.
+@component File selector with icons an text. Supports both click-to-browse and drag-and-drop.
 
    Main properties:
    - `file` - bindable property to get the selected file
@@ -16,48 +16,103 @@
    } = $props();
 
    let fileInput = $state();
-   /* change value for 'file' parameter when user selects or deselects file */
-   function changeStatus(e) {
-      if (fileInput && fileInput.files.length > 0) {
-         file = fileInput.files.length === 1 ? fileInput.files[0] : fileInput.files;
+   let dragCounter = $state(0);
+   let rejected = $state('');
+   let rejectTimer;
+
+   /* set file from a FileList */
+   function setFiles(files) {
+      if (files && files.length > 0) {
+         file = files.length === 1 ? files[0] : files;
       } else {
          file = null;
       }
    }
 
+   /* change value for 'file' parameter when user selects or deselects file */
+   function changeStatus() {
+      setFiles(fileInput?.files);
+   }
+
    /* activate file selection input if user hit Enter or Spacebar when being on label */
    function activateInput(e) {
+      if (e.target.tagName === 'BUTTON') return;
       if (e.type === 'click' || (e.type === 'keydown' && (e.code === 'Space' || e.code === 'Enter'))) fileInput.click();
    }
 
+   /* check if a file matches the acceptType pattern */
+   function isAccepted(f) {
+      if (!acceptType) return true;
+      return acceptType.split(',').some(t => {
+         t = t.trim().toLowerCase();
+         if (t.startsWith('.')) return f.name.toLowerCase().endsWith(t);
+         if (t.endsWith('/*')) return f.type.toLowerCase().startsWith(t.slice(0, -1));
+         return f.type.toLowerCase() === t;
+      });
+   }
+
+   /* show rejection error for 1 second */
+   function reject(msg) {
+      clearTimeout(rejectTimer);
+      rejected = msg;
+      rejectTimer = setTimeout(() => rejected = '', 1000);
+   }
+
+   /* handle file drop */
+   function handleDrop(e) {
+      e.preventDefault();
+      dragCounter = 0;
+      const allFiles = Array.from(e.dataTransfer.files);
+      if (!multiple && allFiles.length > 1) {
+         reject('drop one file only');
+         return;
+      }
+      const dropped = allFiles.filter(isAccepted);
+      if (dropped.length === 0) {
+         reject('wrong file type');
+         return;
+      }
+      setFiles(multiple ? dropped : [dropped[0]]);
+   }
+
    /* resets selection */
-   function reset(e) {
+   function reset() {
       fileInput.value = null;
       file = null;
    }
 </script>
 
 <div tabindex="0" onkeydown={activateInput} onclick={activateInput} role="button" class="file-selector"
-   class:selected={file}>
-   { file ? (file.length > 1 ? `Selected ${file.length} files`: file.name) : message }
+   class:selected={file} class:dragging={dragCounter > 0} class:rejected={rejected !== ''}
+   ondragenter={(e) => { e.preventDefault(); dragCounter++; }}
+   ondragleave={() => dragCounter--}
+   ondragover={(e) => e.preventDefault()}
+   ondrop={handleDrop}>
+   <span>{ file ? (file.length > 1 ? `Selected ${file.length} files`: file.name) : message }</span>
    {#if multiple}
    <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType} multiple>
    {:else}
    <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType}>
    {/if}
+
+   {#if file}
+   <ButtonCancel onclick={reset}/>
+   {/if}
+
+   {#if rejected}
+   <div class="error">{rejected}</div>
+   {/if}
 </div>
-{#if file}
-<ButtonCancel onclick={reset}/>
-{/if}
 
 <style>
    .file-selector > input {
       display: none;
+      position: relative;
    }
 
    .file-selector {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -65,6 +120,10 @@
       min-width: 0;
       border-radius: 2px;
       cursor: default;
+   }
+
+   .file-selector span {
+      flex: 1 1;
    }
 
    .file-selector:focus-visible {
@@ -90,11 +149,45 @@
       color: var(--main-color1, #6eb8ff);
    }
 
+   .file-selector.dragging {
+      background-color: var(--main-color1-light, #6eb8ff20);
+      outline: dashed 2px var(--main-color1, #6eb8ff);
+      outline-offset: 2px;
+   }
+
+   .file-selector.dragging::before {
+      color: var(--main-color1, #6eb8ff);
+   }
+
+   .file-selector.rejected {
+      background-color: var(--error-color, #f0a0a0);
+   }
+
    .file-selector.selected::before {
       content: '\2637';
       font-size: 1.3em;
       letter-spacing: -.2em;
       font-weight: bold;
       color: var(--main-color1, #6eb8ff);
+   }
+
+   .error {
+      display: none;
+   }
+
+   .rejected {
+      position: relative;
+   }
+
+   .rejected .error {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      padding: 0.2em;
+      border-radius: 2px;
    }
 </style>
