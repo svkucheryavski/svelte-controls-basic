@@ -1,7 +1,7 @@
 {
    "name": "svelte-controls-basic",
    "description": "Svelte components for creating simple control widgets",
-   "version": "1.0.0",
+   "version": "1.1.0",
    "author": "Sergey Kucheryavskiy",
    "license": "MIT",
    "private": false,
