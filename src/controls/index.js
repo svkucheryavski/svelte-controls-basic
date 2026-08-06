@@ -2,6 +2,7 @@ export { default as Button } from './Button.svelte';
 export { default as ButtonCancel } from './ButtonCancel.svelte';
 export { default as ButtonUndo } from './ButtonUndo.svelte';
 export { default as ButtonDownload } from './ButtonDownload.svelte';
+export { default as ButtonUpload } from './ButtonUpload.svelte';
 export { default as ButtonAdd } from './ButtonAdd.svelte';
 export { default as ButtonSettings } from './ButtonSettings.svelte';
 export { default as ButtonUp } from './ButtonUp.svelte';
