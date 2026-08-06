@@ -75,7 +75,12 @@
 
    .button-download {
       background-image:
-         url('data:image/svg+xml;utf8,<svg viewBox="0 0 110 110" style="stroke:%23fafafa;stroke-width:1.1em;" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="0" x2="50" y2="100"/><line x1="10" y1="60" x2="50" y2="100"/><line x1="90" y1="60" x2="50" y2="100"/></svg>');
+         url('data:image/svg+xml;utf8,<svg viewBox="0 0 110 110" style="stroke:%23fafafa;stroke-width:1.1em;" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><line x1="55" y1="0" x2="55" y2="90"/><line x1="15" y1="60" x2="55" y2="100"/><line x1="95" y1="60" x2="55" y2="100"/></svg>');
+   }
+
+   .button-upload {
+      background-image:
+         url('data:image/svg+xml;utf8,<svg viewBox="0 0 110 110" style="stroke:%23fafafa;stroke-width:1.1em;" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><line x1="55" y1="100" x2="55" y2="10"/><line x1="15" y1="40" x2="55" y2="2"/><line x1="95" y1="40" x2="55" y2="2"/></svg>');
    }
 
    .button-add {
