@@ -1,23 +1,24 @@
 {
    "name": "svelte-controls-basic",
    "description": "Svelte components for creating simple control widgets",
-   "version": "1.1.0",
+   "version": "1.1.1",
    "author": "Sergey Kucheryavskiy",
    "license": "MIT",
    "private": false,
+   "type": "module",
+   "svelte": "./src/controls/index.js",
    "exports": {
-      ".":  "./src/controls/index.js"
+      ".":  { "svelte": "./src/controls/index.js", "default": "./src/controls/index.js" },
+      "./package.json": "./package.json"
+   },
+   "peerDependencies": {
+      "svelte": "^5.0.0"
    },
    "devDependencies": {
-      "svelte": "^5.x.x"
+      "svelte": "^5.0.0"
    },
-   "keywords": [
-      "svelte",
-      "controls"
-   ],
-   "files": [
-      "src"
-   ],
+   "keywords": ["svelte", "controls"],
+   "files": ["src"],
    "repository": {
       "type": "git",
       "url": "svkucheryavski/svelte-controls-basic"
