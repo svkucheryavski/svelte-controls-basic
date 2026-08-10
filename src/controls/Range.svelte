@@ -208,7 +208,7 @@
    }
 
    .range-slider-container:focus-visible {
-      outline: solid 2px var(--outline-color, #ccc);
+      outline: solid 2px var(--outline-color, #767676);
       outline-offset: 2px;
    }
 

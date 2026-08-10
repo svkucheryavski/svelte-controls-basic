@@ -1,5 +1,5 @@
 export const Colors = '\
---outline-color: #ccc; \
+--outline-color: #767676; \
 --text-color-dark: #606570; \
 --text-color-light: #fafafa; \
 --text-color-placeholder: #a0a0a0;\

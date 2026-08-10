@@ -45,7 +45,7 @@
    .button:focus-visible {
       outline: solid 2px;
       outline-offset: 2px;
-      outline-color: var(--outline-color, #ccc);
+      outline-color: var(--outline-color, #767676);
    }
 
 </style>

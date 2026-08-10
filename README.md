@@ -368,7 +368,7 @@ Available variables:
 
 | Variable | Default | Description |
 |---|---|---|
-| `--outline-color` | `#ccc` | Focus outline color |
+| `--outline-color` | `#767676` | Focus outline color |
 | `--text-color-dark` | `#606570` | Dark text / label color |
 | `--text-color-light` | `#fafafa` | Light text (on colored backgrounds) |
 | `--text-color-placeholder` | `#a0a0a0` | Placeholder text in `TextInput` |
