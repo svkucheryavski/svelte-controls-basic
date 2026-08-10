@@ -21,8 +21,36 @@
       disable = false,       // if true all controls of the widget are disabled
    } = $props();
 
+   const warned = new Set();
+
    $effect(() => {
-      if (!value && options) value = getDefaults(options);
+      if (!options) return;
+
+      if (!value) {
+         value = getDefaults(options);
+         return;
+      }
+
+      /* a binding may not receive 'undefined' - it throws in the control it is bound to. So
+         every option must have an entry, also when 'value' was made for an older, shorter
+         set of options and is now reused with a longer one */
+      let missing = null;
+      for (const id of Object.keys(options)) {
+         if (value[id] !== undefined) continue;
+
+         if (options[id].default === undefined) {
+            if (!warned.has(id)) {
+               warned.add(id);
+               console.error(`Widget: option "${id}" has neither a value nor a "default", its control is not shown.`);
+            }
+            continue;
+         }
+
+         if (missing === null) missing = {};
+         missing[id] = options[id].default;
+      }
+
+      if (missing !== null) value = { ...value, ...missing };
    });
 
    /* the widget can only add to what an option already asks for, so that 'disable' set for a
@@ -39,9 +67,11 @@
       </Container>
       {/if}
 
-      {#each Object.keys(options) as id}
+      {#each Object.keys(options) as id (id)}
          {@const opt = options[id]}
-         {#if !opt.hidden}
+         <!-- a control is only created once its value exists: bound to 'undefined' it would
+              throw, and one which silently corrects the value would overwrite the default -->
+         {#if !opt.hidden && value[id] !== undefined}
          <Container name={opt.name} label={opt.label} {labelWidth} {colors}>
          <opt.el {...opt.props} disable={isDisabled(opt)} bind:value={value[id]}/>
          </Container>

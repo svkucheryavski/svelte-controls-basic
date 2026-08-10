@@ -7,6 +7,11 @@
    - `maxLength` - maximum number of symbols that can be entered, default: `25`.
    - `validator` - function to validate the input value (should return error message or empty string)
    - `disable` - if `true` the input does not react to any input, default: `false`.
+
+   The validator is re-run whenever the value or the validator itself changes, also when the
+   change comes from the parent and not from the user. The message is however not shown for the
+   value the input was created with, so a form does not open with error messages on the fields
+   nobody has touched yet.
 -->
 <script>
    let {
@@ -19,17 +24,26 @@
       onchange = null,              // callback when value changes
    } = $props();
 
-   let error = $state('')
+   /* the value the input was created with - the message stays hidden as long as nothing has
+      changed it, so an untouched form does not open covered in error messages */
+   const initialValue = value;
+
+   /* derived and not set from the input handler, so that a value or a validator replaced by
+      the parent does not leave an outdated message on the screen */
+   const error = $derived.by(() => {
+      if (!validator || Object.is(value, initialValue)) return '';
+      const msg = validator(value);
+      return typeof msg === 'string' ? msg : '';
+   });
 
    function handleInput() {
-      if (validator) error = validator(value);
       if (onchange) onchange(value);
    }
 </script>
 
-<div class="textinput {className}" class:error={error && error.length > 0}>
+<div class="textinput {className}" class:error={error !== ''}>
 <input type="text" {placeholder} maxlength={maxLength} disabled={disable} bind:value={value} oninput={handleInput}>
-{#if error && error.length > 0}<div class="error-message">{error}</div>{/if}
+{#if error !== ''}<div class="error-message">{error}</div>{/if}
 </div>
 
 <style>

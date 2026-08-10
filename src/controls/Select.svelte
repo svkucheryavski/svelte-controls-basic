@@ -6,6 +6,11 @@
    - `value` - the selected value (string, bindable), default - the first option.
    - `className` - additional class name for building customized selects.
    - `disable` - if `true` the selector does not react to any input, default: `false`.
+   - `html` - if `true` the options are rendered as HTML, default: `true`.
+
+   The options are rendered as HTML, so that they can contain markup, e.g. `'m<sup>2</sup>'`.
+   Set `html={false}` when the options do not come from you but from a user, a URL or a
+   server - otherwise they can bring any markup into the page.
 -->
 <script>
    let {
@@ -13,6 +18,7 @@
       value = $bindable(options[0]),   // initial selected value
       className = '',                  // extra class name
       disable = false,                 // if true the selector ignores any input
+      html = true,                     // if true the options are rendered as HTML
       onchange = null,                 // callback when value changes
    } = $props();
 
@@ -57,7 +63,7 @@
 >
    {#each options as option (option)}
    <button type="button" tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option option_{option.toString().replaceAll('.', '_')}" class:selected={option===value}>
-   {@html option}
+   {#if html}{@html option}{:else}{option}{/if}
    </button>
    {/each}
 </div>

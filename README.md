@@ -110,7 +110,12 @@ Selector shown as a row of buttons.
 | `value` | first option | Selected value (bindable) |
 | `className` | `''` | Extra CSS class |
 | `disable` | `false` | Disabled state |
+| `html` | `true` | Render the options as HTML |
 | `onchange` | `null` | Callback when value changes |
+
+Options are rendered as HTML, so a label can contain markup such as `'m<sup>2</sup>'`. Pass
+`html={false}` when the options do not come from you but from a user, a URL or a server —
+otherwise they can bring arbitrary markup into the page.
 
 ### Switch
 
@@ -172,6 +177,10 @@ Text input with optional validation.
 | `validator` | `null` | Function returning error message or `''` |
 | `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
+
+The validator re-runs whenever the value or the validator itself changes, including changes
+made by the parent rather than by the user. The message is not shown for the value the input
+was created with, so a form does not open with error messages on fields nobody has touched.
 
 ### Color
 
@@ -297,8 +306,12 @@ const options = {
 ```
 
 Each entry in `options` is `{ name, label, el: ComponentClass, props, default, hidden }`. Every
-entry must have a `default` — it is what the bound `value` is initialised with, and a control
-bound to `undefined` raises a Svelte error.
+entry should have a `default` — it is what the bound `value` is initialised with. An entry that
+has neither a `default` nor an existing value in `value` is reported on the console and its
+control is skipped, so one incomplete entry does not take the rest of the widget down.
+
+A `value` object that was built for an older, shorter `options` is filled in from the missing
+entries' `default`, so widget settings can be persisted and reused after new options are added.
 
 ### getDefaults
 
