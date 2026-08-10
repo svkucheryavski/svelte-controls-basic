@@ -8,7 +8,6 @@ export const Colors = '\
 --text-color-light: #fafafa;\
 --text-color-placeholder: #6d6d6d;\
 --bg-color-light: #f0f0f0;\
---bg-color-light2: #f6f6f6;\
 --bg-color-medium: #e0e0e0;\
 --bg-color-dark: #606570;\
 --main-color1: #2a75b8;\

@@ -373,8 +373,7 @@ Available variables:
 | `--text-color-light` | `#fafafa` | Light text (on colored backgrounds) |
 | `--text-color-placeholder` | `#6d6d6d` | Placeholder text in `TextInput` |
 | `--bg-color-light` | `#f0f0f0` | Light background |
-| `--bg-color-light2` | `#f6f6f6` | Secondary light background |
-| `--bg-color-medium` | `#e0e0e0` | Medium background |
+| `--bg-color-medium` | `#e0e0e0` | Track of `RangeDiscrete` between the steps |
 | `--bg-color-dark` | `#606570` | Dark background (buttons) |
 | `--main-color1` | `#2a75b8` | Primary accent color |
 | `--main-color1-light` | `#2a75b820` | Primary accent, translucent |
