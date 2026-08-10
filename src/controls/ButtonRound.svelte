@@ -5,12 +5,13 @@
    - `title` - title (alternative text).
    - `className` - additional class name for styling the button.
    - `onclick` - function (callback) to be called when user clicks on the button.
+   - `disable` - if `true` the button is disabled, default: `false`.
 -->
 <script>
    let {title, className, disable = false, onclick} = $props();
 </script>
 
-<button {onclick} {title} aria-label={title} disabled={disable} class="button {className}"></button>
+<button type="button" {onclick} {title} aria-label={title} disabled={disable} class="button {className}"></button>
 
 <style>
    button {

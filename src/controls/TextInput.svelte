@@ -6,6 +6,7 @@
    - `placeholder` - text for place holder, default: `''`.
    - `maxLength` - maximum number of symbols that can be entered, default: `25`.
    - `validator` - function to validate the input value (should return error message or empty string)
+   - `disable` - if `true` the input does not react to any input, default: `false`.
 -->
 <script>
    let {
@@ -14,6 +15,7 @@
       placeholder = '',             // placeholder (hint)
       maxLength = 25,               // maximum number of characters
       validator = null,             // validator callback, returns error message if value is not valid (empty if it is).
+      disable = false,              // if true the input ignores any input
       onchange = null,              // callback when value changes
    } = $props();
 
@@ -26,7 +28,7 @@
 </script>
 
 <div class="textinput {className}" class:error={error && error.length > 0}>
-<input type="text" {placeholder} maxlength={maxLength} bind:value={value} oninput={handleInput}>
+<input type="text" {placeholder} maxlength={maxLength} disabled={disable} bind:value={value} oninput={handleInput}>
 {#if error && error.length > 0}<div class="error-message">{error}</div>{/if}
 </div>
 
@@ -58,6 +60,11 @@
       outline: none;
       background-color: var(--main-color1, #6eb8ff);
       color: var(--text-color-light, #fefefe);
+   }
+
+   .textinput > input:disabled {
+      opacity: 0.4;
+      cursor: default;
    }
 
    .textinput > input:placeholder-shown {

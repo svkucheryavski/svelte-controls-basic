@@ -4,6 +4,7 @@
    Main properties:
    - `options` - array with types to select from, default: `['p', 'l', 'b', 'h', 'qq']`.
    - `value` - the selected type (string), default: first option.
+   - `disable` - if `true` the selector does not react to any input, default: `false`.
 
    The list of supported types:
    - `'p'` - scatter
@@ -20,10 +21,12 @@
    let {
       options = ['p', 'l', 'b', 'h', 'qq'],    // list of types to show
       value = $bindable(options[0]),     // default plot type
+      disable = false,                  // if true the selector ignores any input
       onchange = null,                  // callback when value changes
    } = $props();
 
    function selectOption(option) {
+      if (Object.is(option, value)) return;
       value = option;
       if (onchange) onchange(value);
    }
@@ -33,6 +36,7 @@
     * @param e
     */
    const changeOption = (e) => {
+      if (disable) return;
       if (e.key === 'ArrowLeft') {
          const ind = options.findIndex(v => v === value);
          if (ind > 0) {
@@ -79,9 +83,16 @@
 </script>
 
 
-<div onkeydown={changeOption} role="radiogroup" tabindex="0" class="selector plot-selector">
+<div
+   onkeydown={changeOption}
+   role="radiogroup"
+   class="selector plot-selector"
+   class:disabled={disable}
+   tabindex={disable ? -1 : 0}
+   aria-disabled={disable || undefined}
+>
    {#each options as option (option)}
-   <button tabindex="-1" onclick={() => selectOption(option)} class="option" title={titleFor(option)} class:selected={option===value}>
+   <button type="button" tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option" title={titleFor(option)} class:selected={option===value}>
    {@html prefix + iconFor(option) + '</svg>'}
    </button>
    {/each}
@@ -136,13 +147,17 @@
       stroke: var(--text-color-light, #fefefe);
    }
 
-   .option:not(.selected):hover {
+   .option:not(.selected):hover:not(:disabled) {
       border: 1px solid var(--main-color1, #6eb8ff);
       background-color: var(--main-color1-light, #6eb8ff20);
       color: var(--main-color2, #4777a4);
    }
 
-   .option:not(.selected):hover :global(svg) {
+   .option:not(.selected):hover:not(:disabled) :global(svg) {
       stroke: var(--main-color2, #4777a4);
+   }
+
+   .selector.disabled {
+      opacity: 0.4;
    }
 </style>

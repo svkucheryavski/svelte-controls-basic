@@ -7,6 +7,7 @@
    - `value` - currently selected value (bindable), default: `min`.
    - `decNum` - number of decimals to show the current value with, default: `1`.
    - `step` - increment between the values, by default `10^(-decNum)` (or `1` when `decNum` is `0`).
+   - `disable` - if `true` the selector does not react to any input, default: `false`.
 -->
 <script>
    let {
@@ -15,10 +16,12 @@
       value = $bindable(min),                       // selected value
       decNum = 1,                                // number of decimals to show the current value
       step = decNum === 0 ? 1 : Math.pow(10, -decNum),    // increment/decrement step
+      disable = false,                              // if true the selector ignores any input
       onchange = null,                              // callback when value changes
    } = $props();
 
    function setValue(newValue) {
+      if (Object.is(newValue, value)) return;
       value = newValue;
       if (onchange) onchange(value);
    }
@@ -31,10 +34,12 @@
 
 
    function increase() {
+      if (disable) return;
       setValue(value + step > max ? max : value + step);
    }
 
    function decrease() {
+      if (disable) return;
       setValue(value - step < min ? min : value - step);
    }
 
@@ -43,6 +48,7 @@
     * @param e
     */
    function changingByKeys(e) {
+      if (disable) return;
       if (e.key === 'ArrowDown') decrease();
       if (e.key === 'ArrowUp') increase();
    }
@@ -52,20 +58,22 @@
 <div
    role="slider"
    class="number-container"
-   tabindex="0"
+   class:disabled={disable}
+   tabindex={disable ? -1 : 0}
    aria-valuenow={value}
    aria-valuemin={min}
    aria-valuemax={max}
+   aria-disabled={disable || undefined}
    onkeydown={changingByKeys}
 >
 
    <span class="value">{value.toFixed(decNum)}</span>
-   <button aria-label="increase" tabindex="-1" onclick={increase} class="button-small button-up">
+   <button type="button" aria-label="increase" tabindex="-1" disabled={disable} onclick={increase} class="button-small button-up">
       <svg viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
       <polygon points="0,13 7,2 15,13, 0,13" />
       </svg>
    </button>
-   <button aria-label="decrease"  tabindex="-1" onclick={decrease} class="button-small button-down">
+   <button type="button" aria-label="decrease"  tabindex="-1" disabled={disable} onclick={decrease} class="button-small button-down">
       <svg width="100%" height="100%" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
       <polygon points="0,2 7,13 15,2, 0,2" />
       </svg>
@@ -104,6 +112,10 @@
       outline-color: var(--outline-color, #ccc);
    }
 
+   .number-container.disabled {
+      opacity: 0.4;
+   }
+
    .value {
       grid-area: value;
       box-sizing: border-box;
@@ -139,7 +151,7 @@
       fill: var(--main-color2, #4777a4);
    }
 
-   .button-small:hover > svg > :global(polygon) {
+   .button-small:hover:not(:disabled) > svg > :global(polygon) {
       fill: var(--main-color1, #6eb8ff);
    }
 

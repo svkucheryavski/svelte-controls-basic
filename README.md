@@ -74,6 +74,8 @@ Continuous range slider with mouse, touch, wheel, and keyboard support.
 | `value` | `min` | Current value (bindable) |
 | `decNum` | `1` | Decimal places to display |
 | `step` | `(max-min)/100` | Increment step |
+| `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name for the slider |
 | `onchange` | `null` | Callback when value changes |
 
 ### RangeDiscrete
@@ -90,6 +92,8 @@ Like `Range` but for discrete (integer) values with a striped background showing
 | `max` | `10` | Maximum value |
 | `value` | `min` | Current value (bindable) |
 | `step` | `1` | Increment step |
+| `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name for the slider |
 | `onchange` | `null` | Callback when value changes |
 
 ### Select
@@ -105,6 +109,7 @@ Selector shown as a row of buttons.
 | `options` | | Array of option strings |
 | `value` | first option | Selected value (bindable) |
 | `className` | `''` | Extra CSS class |
+| `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
 
 ### Switch
@@ -119,6 +124,7 @@ Boolean toggle built on top of `Select`. Maps two string options to `true`/`fals
 |---|---|---|
 | `options` | `["no", "yes"]` | Two option labels |
 | `value` | `false` | Boolean value (bindable) |
+| `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
 
 ### Number
@@ -136,6 +142,7 @@ Number input with increment/decrement buttons and arrow key support.
 | `value` | `min` | Current value (bindable) |
 | `decNum` | `1` | Decimal places |
 | `step` | `10^(-decNum)` | Increment step |
+| `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
 
 > **Note on the export name.** This component is exported as `Number`, which shadows the
@@ -157,6 +164,7 @@ Text input with optional validation.
 | `placeholder` | `''` | Placeholder text |
 | `maxLength` | `25` | Maximum character count |
 | `validator` | `null` | Function returning error message or `''` |
+| `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
 
 ### Color
@@ -170,6 +178,7 @@ Color picker using the native HTML5 color input.
 | Property | Default | Description |
 |---|---|---|
 | `value` | `'#000000'` | Color value (bindable) |
+| `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
 
 ### PlotTypeSelector
@@ -184,6 +193,7 @@ Selector with SVG icons for plot types: `'p'` (scatter), `'l'` (line), `'b'` (bo
 |---|---|---|
 | `options` | `['p','l','b','h','qq']` | Plot types to show |
 | `value` | first option | Selected type (bindable) |
+| `disable` | `false` | Disabled state |
 | `onchange` | `null` | Callback when value changes |
 
 ### FileSelector
@@ -200,6 +210,7 @@ File upload trigger with visual feedback.
 | `message` | `'Select CSV file with dataset'` | Prompt text |
 | `acceptType` | `'.csv'` | Accepted file types |
 | `multiple` | `false` | Allow multiple files |
+| `disable` | `false` | Disabled state |
 
 ### Button
 
@@ -212,6 +223,8 @@ Simple text button.
 | Property | Default | Description |
 |---|---|---|
 | `text` | `'button'` | Button text |
+| `type` | `'button'` | Native button type, set to `'submit'` to submit a surrounding form |
+| `disable` | `false` | Disabled state |
 | `onclick` | | Click callback |
 
 ### Icon buttons
@@ -266,6 +279,16 @@ Combines multiple controls into a group, producing a single bindable JSON value.
 | `value` | | JSON object with all values (bindable) |
 | `labelWidth` | `13` | Label width in `ch` units |
 | `colors` | `''` | CSS variables string for theming |
+| `disable` | `false` | Disables every control of the widget |
+
+Setting `disable` on the widget disables all of its controls. A single control can also be
+disabled on its own via `props`, and that stays in effect regardless of the widget-level value:
+
+```svelte
+const options = {
+   method: { label: 'method', el: Select, props: { options: ['PCA', 'PLS'], disable: true }, default: 'PCA' },
+};
+```
 
 Each entry in `options` is `{ name, label, el: ComponentClass, props, default, hidden }`. Every
 entry must have a `default` — it is what the bound `value` is initialised with, and a control

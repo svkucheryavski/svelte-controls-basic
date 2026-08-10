@@ -5,6 +5,7 @@
    - `file` - bindable property to get the selected file
    - `message` - message text to show on the selector, default: `'Select CSV file with dataset'`.
    - `acceptType` - pattern - which files to accept, default: `'.csv'`.
+   - `disable` - if `true` the selector does not react to any input, default: `false`.
 -->
 <script>
    import ButtonCancel from './ButtonCancel.svelte'
@@ -12,7 +13,8 @@
       file = $bindable(),                        // container to get return the uploaded file
       message = 'Select CSV file with dataset',  // message to show when no file is selected
       acceptType = '.csv',                       // file type to accept
-      multiple = false
+      multiple = false,
+      disable = false                            // if true the selector ignores any input
    } = $props();
 
    let fileInput = $state();
@@ -36,6 +38,7 @@
 
    /* activate file selection input if user hit Enter or Spacebar when being on label */
    function activateInput(e) {
+      if (disable) return;
       if (e.target.tagName === 'BUTTON') return;
       if (e.type === 'click' || (e.type === 'keydown' && (e.code === 'Space' || e.code === 'Enter'))) fileInput.click();
    }
@@ -62,6 +65,7 @@
    function handleDrop(e) {
       e.preventDefault();
       dragCounter = 0;
+      if (disable) return;
       const allFiles = Array.from(e.dataTransfer.files);
       if (!multiple && allFiles.length > 1) {
          reject('drop one file only');
@@ -77,26 +81,28 @@
 
    /* resets selection */
    function reset() {
+      if (disable) return;
       fileInput.value = null;
       file = null;
    }
 </script>
 
-<div tabindex="0" onkeydown={activateInput} onclick={activateInput} role="button" class="file-selector"
+<div tabindex={disable ? -1 : 0} onkeydown={activateInput} onclick={activateInput} role="button" class="file-selector"
    class:selected={file} class:dragging={dragCounter > 0} class:rejected={rejected !== ''}
-   ondragenter={(e) => { e.preventDefault(); dragCounter++; }}
-   ondragleave={() => dragCounter--}
+   class:disabled={disable} aria-disabled={disable || undefined}
+   ondragenter={(e) => { e.preventDefault(); if (!disable) dragCounter++; }}
+   ondragleave={() => { if (dragCounter > 0) dragCounter--; }}
    ondragover={(e) => e.preventDefault()}
    ondrop={handleDrop}>
    <span>{ file ? (file.length > 1 ? `Selected ${file.length} files`: file.name) : message }</span>
    {#if multiple}
-   <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType} multiple>
+   <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType} disabled={disable} multiple>
    {:else}
-   <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType}>
+   <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType} disabled={disable}>
    {/if}
 
    {#if file}
-   <ButtonCancel onclick={reset}/>
+   <ButtonCancel onclick={reset} {disable}/>
    {/if}
 
    {#if rejected}
@@ -145,8 +151,12 @@
       color: var(--text-color-dark, #606570);
    }
 
-   .file-selector:hover::before {
+   .file-selector:hover:not(.disabled)::before {
       color: var(--main-color1, #6eb8ff);
+   }
+
+   .file-selector.disabled {
+      opacity: 0.4;
    }
 
    .file-selector.dragging {

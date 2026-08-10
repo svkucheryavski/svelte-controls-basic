@@ -5,16 +5,19 @@
    - `options` - array with options (strings).
    - `value` - the selected value (string, bindable), default - the first option.
    - `className` - additional class name for building customized selects.
+   - `disable` - if `true` the selector does not react to any input, default: `false`.
 -->
 <script>
    let {
       options,                         // array with all options
       value = $bindable(options[0]),   // initial selected value
       className = '',                  // extra class name
+      disable = false,                 // if true the selector ignores any input
       onchange = null,                 // callback when value changes
    } = $props();
 
    function selectOption(option) {
+      if (Object.is(option, value)) return;
       value = option;
       if (onchange) onchange(value);
    }
@@ -24,6 +27,7 @@
     * @param e
     */
    const changeOption = (e) => {
+      if (disable) return;
       if (e.key === 'ArrowLeft') {
          const ind = options.findIndex(v => v === value);
          if (ind > 0) {
@@ -43,9 +47,16 @@
 
 </script>
 
-<div onkeydown={changeOption} role="radiogroup" tabindex="0" class="selector {className}">
+<div
+   onkeydown={changeOption}
+   role="radiogroup"
+   class="selector {className}"
+   class:disabled={disable}
+   tabindex={disable ? -1 : 0}
+   aria-disabled={disable || undefined}
+>
    {#each options as option (option)}
-   <button tabindex="-1" onclick={() => selectOption(option)} class="option option_{option.toString().replaceAll('.', '_')}" class:selected={option===value}>
+   <button type="button" tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option option_{option.toString().replaceAll('.', '_')}" class:selected={option===value}>
    {@html option}
    </button>
    {/each}
@@ -88,9 +99,13 @@
       color: var(--text-color-light, #fefefe);
    }
 
-   .option:not(.selected):hover {
+   .option:not(.selected):hover:not(:disabled) {
       border: 1px solid var(--main-color1, #6eb8ff);
       background-color: var(--main-color1-light, #6eb8ff20);
       color: var(--main-color2, #4777a4);
+   }
+
+   .selector.disabled {
+      opacity: 0.4;
    }
 </style>

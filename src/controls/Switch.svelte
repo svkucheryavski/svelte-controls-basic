@@ -4,6 +4,7 @@
    Main properties:
    - `options` - array with two options (strings), first for `false`, second for `true`.
    - `value` - the selected value, default: `false`.
+   - `disable` - if `true` the switch does not react to any input, default: `false`.
 -->
 <script>
    import Select from './Select.svelte';
@@ -11,6 +12,7 @@
    let {
       options = ["no", "yes"],         // array with all options
       value = $bindable(false),        // initial selected value
+      disable = false,                 // if true the switch ignores any input
       onchange = null,                 // callback when value changes
    } = $props();
 
@@ -30,11 +32,13 @@
 
    // sync user selection → value (via Select's onchange, avoiding circular $effect)
    function handleSelect(selected) {
-      value = selected === options[1];
+      const newValue = selected === options[1];
+      if (Object.is(newValue, value)) return;
+      value = newValue;
       if (onchange) onchange(value);
    }
 </script>
 
 {#if cleanOptions}
-<Select options={cleanOptions} bind:value={selectValue} onchange={handleSelect} />
+<Select options={cleanOptions} bind:value={selectValue} {disable} onchange={handleSelect} />
 {/if}
