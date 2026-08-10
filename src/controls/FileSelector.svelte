@@ -36,13 +36,6 @@
       setFiles(fileInput?.files);
    }
 
-   /* activate file selection input if user hit Enter or Spacebar when being on label */
-   function activateInput(e) {
-      if (disable) return;
-      if (e.target.tagName === 'BUTTON') return;
-      if (e.type === 'click' || (e.type === 'keydown' && (e.code === 'Space' || e.code === 'Enter'))) fileInput.click();
-   }
-
    /* check if a file matches the acceptType pattern */
    function isAccepted(f) {
       if (!acceptType) return true;
@@ -87,33 +80,49 @@
    }
 </script>
 
-<div tabindex={disable ? -1 : 0} onkeydown={activateInput} onclick={activateInput} role="button" class="file-selector"
+<!-- 'group' and not 'button': a group keeps everything inside it reachable, while a button
+     turns its whole content presentational -->
+<div class="file-selector" role="group"
    class:selected={file} class:dragging={dragCounter > 0} class:rejected={rejected !== ''}
-   class:disabled={disable} aria-disabled={disable || undefined}
+   class:disabled={disable}
    ondragenter={(e) => { e.preventDefault(); if (!disable) dragCounter++; }}
    ondragleave={() => { if (dragCounter > 0) dragCounter--; }}
    ondragover={(e) => e.preventDefault()}
    ondrop={handleDrop}>
-   <span>{ file ? (file.length > 1 ? `Selected ${file.length} files`: file.name) : message }</span>
-   {#if multiple}
-   <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType} disabled={disable} multiple>
-   {:else}
-   <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType} disabled={disable}>
-   {/if}
+
+   <!-- the native input is the control itself. It used to be replaced by a div with
+        role="button", which makes everything inside it presentational - the reset button was
+        then unreachable for a screen reader. Here the input only gets clipped away, so it
+        keeps its own keyboard behaviour, its accessible name and its disabled state, and the
+        reset button stays a separate stop for both keyboard and screen reader -->
+   <label>
+      <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType}
+         disabled={disable} multiple={multiple}>
+      <span>{ file ? (file.length > 1 ? `Selected ${file.length} files`: file.name) : message }</span>
+   </label>
 
    {#if file}
    <ButtonCancel onclick={reset} {disable}/>
    {/if}
 
    {#if rejected}
-   <div class="error">{rejected}</div>
+   <div class="error" role="alert">{rejected}</div>
    {/if}
 </div>
 
 <style>
-   .file-selector > input {
-      display: none;
-      position: relative;
+   /* clipped instead of 'display: none', so the input stays focusable and keeps being
+      announced - a hidden input is not part of the accessibility tree */
+   .file-selector input[type="file"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      clip-path: inset(50%);
    }
 
    .file-selector {
@@ -126,23 +135,41 @@
       min-width: 0;
       border-radius: 2px;
       cursor: default;
+
+      /* containing block for the clipped input above */
+      position: relative;
+   }
+
+   /* the label carries what the container used to carry, so the row still looks the same and
+      the icon stays part of the clickable area */
+   .file-selector > label {
+      display: flex;
+      align-items: center;
+      flex: 1 1;
+      min-width: 0;
+      overflow: hidden;
+      cursor: default;
    }
 
    .file-selector span {
       flex: 1 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
    }
 
-   .file-selector:focus-visible {
+   .file-selector:has(input:focus-visible) {
       outline: solid 2px;
       outline-offset: 2px;
       outline-color: var(--outline-color, #ccc);
    }
 
-   .file-selector:focus-visible::before {
+   .file-selector:has(input:focus-visible) > label::before {
       color: var(--main-color1, #6eb8ff);
    }
 
-   .file-selector::before {
+   .file-selector > label::before {
       display: inline-block;
       content: '\21ea';
       font-size: 1.1em;
@@ -151,7 +178,7 @@
       color: var(--text-color-dark, #606570);
    }
 
-   .file-selector:hover:not(.disabled)::before {
+   .file-selector:hover:not(.disabled) > label::before {
       color: var(--main-color1, #6eb8ff);
    }
 
@@ -165,7 +192,7 @@
       outline-offset: 2px;
    }
 
-   .file-selector.dragging::before {
+   .file-selector.dragging > label::before {
       color: var(--main-color1, #6eb8ff);
    }
 
@@ -173,7 +200,7 @@
       background-color: var(--error-color, #f0a0a0);
    }
 
-   .file-selector.selected::before {
+   .file-selector.selected > label::before {
       content: '\2637';
       font-size: 1.3em;
       letter-spacing: -.2em;

@@ -1,7 +1,17 @@
 <!--
 @component Shows spinner
+
+   Main properties:
+   - `label` - text announced by screen readers while the spinner is shown, default: `'Loading'`.
+
+   The spinner carries no visible text, so the label is the only thing assistive technology can
+   announce. Render the spinner conditionally - it is announced when it appears.
 -->
-<div class="spinner"></div>
+<script>
+   let { label = 'Loading' } = $props();
+</script>
+
+<div class="spinner" role="status" aria-label={label}></div>
 
 <style>
    .spinner {
@@ -30,6 +40,13 @@
       }
       100% {
          transform: rotate(360deg);
+      }
+   }
+
+   /* the rotation is what says "busy", so it is slowed down rather than stopped */
+   @media (prefers-reduced-motion: reduce) {
+      .spinner:after {
+         animation-duration: 3s;
       }
    }
 </style>

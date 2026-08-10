@@ -227,6 +227,10 @@ File upload trigger with visual feedback.
 | `multiple` | `false` | Allow multiple files |
 | `disable` | `false` | Disabled state |
 
+The control is a real `<input type="file">` wrapped in a label, so it behaves natively for the
+keyboard and takes its accessible name from the visible text. The clear button next to it is a
+separate stop for both keyboard and screen reader.
+
 ### Button
 
 Simple text button.
@@ -261,11 +265,19 @@ Round icon buttons: `ButtonCancel`, `ButtonUndo`, `ButtonAdd`, `ButtonDownload`,
 
 ### Spinner
 
-Animated loading spinner. No properties.
+Animated loading spinner.
 
 ```svelte
-<Spinner />
+{#if isLoading}<Spinner label="Fetching results" />{/if}
 ```
+
+| Property | Default | Description |
+|---|---|---|
+| `label` | `'Loading'` | Text announced by screen readers while the spinner is shown |
+
+The spinner has `role="status"` and no visible text, so `label` is the only thing assistive
+technology can announce. Render it conditionally, as above, so it is announced when it appears.
+Its rotation slows down for users who ask for reduced motion.
 
 ### Widget
 

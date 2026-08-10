@@ -22,7 +22,9 @@
    You can also put any text inside container, tags `<p>` and `<h2>` will be styled nicely.
 
    If you provide status `'error'` the container will be shown using a specific warning color
-   (by default crimson) assuming that it contains an error message.
+   (by default crimson) assuming that it contains an error message. Such a container also gets
+   `role="alert"`, so that its content is announced when it appears - render it conditionally,
+   as in the example below, and not with a `hidden` attribute.
 
    **Example:**
 
@@ -59,7 +61,9 @@
    } = $props();
 </script>
 
-<div class="control-element {name} {status}" style={colors}>
+<!-- an error is otherwise told apart by its color only, which assistive technology can not
+     report - the role makes the message announced when it shows up -->
+<div class="control-element {name} {status}" style={colors} role={status === 'error' ? 'alert' : undefined}>
    {#if label}
    <span class="label" style="flex-basis:{labelWidth}ch;">{label}</span>
    {/if}
