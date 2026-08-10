@@ -2,6 +2,7 @@ export const Colors = '\
 --outline-color: #ccc; \
 --text-color-dark: #606570; \
 --text-color-light: #fafafa; \
+--text-color-placeholder: #a0a0a0;\
 --bg-color-light: #f0f0f0;\
 --bg-color-light2: #f6f6f6 ;\
 --bg-color-medium: #e0e0e0;\
@@ -12,6 +13,7 @@ export const Colors = '\
 --warning-color: crimson;\
 --warning-text-color: #fefafa;\
 --warning-color-light: #ffd5ce;\
+--warning-color-dark: crimson;\
 --warning-link-color:#fae550;\
 --warning-link-hover-color:#ffee80;\
 --container-bg-color: #fff;\

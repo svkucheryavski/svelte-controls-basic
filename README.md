@@ -371,6 +371,7 @@ Available variables:
 | `--outline-color` | `#ccc` | Focus outline color |
 | `--text-color-dark` | `#606570` | Dark text / label color |
 | `--text-color-light` | `#fafafa` | Light text (on colored backgrounds) |
+| `--text-color-placeholder` | `#a0a0a0` | Placeholder text in `TextInput` |
 | `--bg-color-light` | `#f0f0f0` | Light background |
 | `--bg-color-light2` | `#f6f6f6` | Secondary light background |
 | `--bg-color-medium` | `#e0e0e0` | Medium background |
@@ -378,13 +379,20 @@ Available variables:
 | `--main-color1` | `#6eb8ff` | Primary accent color |
 | `--main-color1-light` | `#6eb8ff20` | Primary accent, translucent |
 | `--main-color2` | `#4777a4` | Secondary accent color |
-| `--warning-color` | `crimson` | Warning / error color |
-| `--warning-text-color` | `#fefafa` | Text on warning background |
-| `--warning-color-light` | `#ffd5ce` | Light warning background |
+| `--warning-color` | `crimson` | Warning **background** (error `Container`, `ButtonCancel` hover) |
+| `--warning-text-color` | `#fefafa` | Text drawn **on** `--warning-color` |
+| `--warning-color-light` | `#ffd5ce` | Light warning background (`TextInput` error state) |
+| `--warning-color-dark` | `crimson` | Text and border drawn **on** `--warning-color-light` |
 | `--warning-link-color` | `#fae550` | Link color in error containers |
 | `--warning-link-hover-color` | `#ffee80` | Link hover color in error containers |
 | `--container-bg-color` | `#fff` | Container background |
 | `--container-bg-color-hover` | `#fafdff` | Container hover background |
+
+The four warning variables come in two pairs, and mixing them up is easy: `--warning-color` is a
+**background** with `--warning-text-color` written on it, while `--warning-color-light` is a
+background with `--warning-color-dark` written on it. A theme that sets `--warning-color` to a
+pale shade — correct for a background — must also set `--warning-color-dark`, or the error text
+in `TextInput` inherits a pale colour on a pale background and becomes unreadable.
 
 ### Additional variables (not part of `Colors`)
 

@@ -88,7 +88,7 @@
    }
 
    .textinput > input::placeholder {
-      color: #a0a0a0;
+      color: var(--text-color-placeholder, #a0a0a0);
    }
 
    .textinput > input:active::placeholder,
@@ -103,12 +103,16 @@
       color: var(--main-color2, #4777a4);
    }
 
+   /* '--warning-color-dark' and not '--warning-color': the latter is the colour of a warning
+      *background* elsewhere in the library, so a theme which sets it to a pale shade - the
+      right choice for a background - would paint this text invisible on the pale background
+      below it */
    .textinput.error > input,
    .textinput.error > input:focus,
    .textinput.error > input:active {
-      color: var(--warning-color, crimson);
+      color: var(--warning-color-dark, crimson);
       background-color: var(--warning-color-light, #ffd5ce);
-      border-color: var(--warning-color, crimson);
+      border-color: var(--warning-color-dark, crimson);
    }
 
    .error-message {
@@ -119,7 +123,7 @@
       line-height: 1em;
       font-size: 0.75em;
       padding: 0.5em;
-      color: var(--warning-color, crimson);
+      color: var(--warning-color-dark, crimson);
       background-color: var(--warning-color-light, #ffd5ce);
    }
 </style>
