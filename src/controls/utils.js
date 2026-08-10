@@ -1,23 +1,28 @@
+/* Default theme. Every pair of colours which ends up drawn on top of another meets WCAG 2.1
+   AA - 4.5:1 for text, 3:1 for the borders and filled areas which carry meaning on their own.
+   That is what fixes the lightness of '--main-color1': the near-white '--text-color-light' is
+   written on it, so a lighter accent cannot stay readable. Only its saturation is free. */
 export const Colors = '\
---outline-color: #767676; \
---text-color-dark: #606570; \
---text-color-light: #fafafa; \
---text-color-placeholder: #a0a0a0;\
+--outline-color: #767676;\
+--text-color-dark: #606570;\
+--text-color-light: #fafafa;\
+--text-color-placeholder: #6d6d6d;\
 --bg-color-light: #f0f0f0;\
---bg-color-light2: #f6f6f6 ;\
+--bg-color-light2: #f6f6f6;\
 --bg-color-medium: #e0e0e0;\
 --bg-color-dark: #606570;\
---main-color1: #6eb8ff;\
---main-color1-light: #6eb8ff20;\
---main-color2: #4777a4;\
---warning-color: crimson;\
+--main-color1: #2a75b8;\
+--main-color1-light: #2a75b820;\
+--main-color2: #1a4972;\
+--warning-color: #b00d2f;\
 --warning-text-color: #fefafa;\
 --warning-color-light: #ffd5ce;\
---warning-color-dark: crimson;\
---warning-link-color:#fae550;\
---warning-link-hover-color:#ffee80;\
+--warning-color-dark: #b00d2f;\
+--warning-link-color: #fae550;\
+--warning-link-hover-color: #ffee80;\
 --container-bg-color: #fff;\
 --container-bg-color-hover: #fafdff;\
+--slider-edge-color: #15395a;\
 ';
 
 export function getDefaults(options) {

@@ -371,22 +371,36 @@ Available variables:
 | `--outline-color` | `#767676` | Focus outline color |
 | `--text-color-dark` | `#606570` | Dark text / label color |
 | `--text-color-light` | `#fafafa` | Light text (on colored backgrounds) |
-| `--text-color-placeholder` | `#a0a0a0` | Placeholder text in `TextInput` |
+| `--text-color-placeholder` | `#6d6d6d` | Placeholder text in `TextInput` |
 | `--bg-color-light` | `#f0f0f0` | Light background |
 | `--bg-color-light2` | `#f6f6f6` | Secondary light background |
 | `--bg-color-medium` | `#e0e0e0` | Medium background |
 | `--bg-color-dark` | `#606570` | Dark background (buttons) |
-| `--main-color1` | `#6eb8ff` | Primary accent color |
-| `--main-color1-light` | `#6eb8ff20` | Primary accent, translucent |
-| `--main-color2` | `#4777a4` | Secondary accent color |
-| `--warning-color` | `crimson` | Warning **background** (error `Container`, `ButtonCancel` hover) |
+| `--main-color1` | `#2a75b8` | Primary accent color |
+| `--main-color1-light` | `#2a75b820` | Primary accent, translucent |
+| `--main-color2` | `#1a4972` | Secondary accent color |
+| `--warning-color` | `#b00d2f` | Warning **background** (error `Container`, `ButtonCancel` hover) |
 | `--warning-text-color` | `#fefafa` | Text drawn **on** `--warning-color` |
 | `--warning-color-light` | `#ffd5ce` | Light warning background (`TextInput` error state) |
-| `--warning-color-dark` | `crimson` | Text and border drawn **on** `--warning-color-light` |
+| `--warning-color-dark` | `#b00d2f` | Text and border drawn **on** `--warning-color-light` |
 | `--warning-link-color` | `#fae550` | Link color in error containers |
 | `--warning-link-hover-color` | `#ffee80` | Link hover color in error containers |
 | `--container-bg-color` | `#fff` | Container background |
 | `--container-bg-color-hover` | `#fafdff` | Container hover background |
+| `--slider-edge-color` | `#15395a` | Grip edge on the filled bar of `Range` |
+
+Every pair of these colors which ends up drawn on top of another meets WCAG 2.1 AA — 4.5:1 for
+text, 3:1 for the borders and filled areas which carry meaning on their own. This is what fixes
+the lightness of `--main-color1`: the near-white `--text-color-light` is written on it in the
+selected option of a `Select`, the value of a `Range` and a filled `TextInput`, so a lighter
+accent cannot stay readable there. Only its saturation is free. If you replace the palette with
+your own, the same two constraints apply to it.
+
+`--slider-edge-color` marks the grip on the filled bar of a `Range` and falls back to
+`--main-color2` when it is not set, which is what the edge used before it existed. Set it when
+your secondary color sits too close to your primary one to keep the grip visible against the
+bar — darkening `--main-color2` instead would also darken the hover text and the `Number`
+arrows, which read the same variable.
 
 The four warning variables come in two pairs, and mixing them up is easy: `--warning-color` is a
 **background** with `--warning-text-color` written on it, while `--warning-color-light` is a
@@ -396,20 +410,14 @@ in `TextInput` inherits a pale colour on a pale background and becomes unreadabl
 
 ### Additional variables (not part of `Colors`)
 
-These are read by a component but are deliberately absent from the `Colors` constant, because
-`Colors` is applied as an inline style on `Container` and would otherwise shadow a value you
-may have defined yourself at `:root`. Set them alongside `Colors` if you want to override the
-built-in fallback.
-
 | Variable | Default | Description |
 |---|---|---|
 | `--error-color` | `#f0a0a0` | Background of `FileSelector` when a dropped file is rejected |
-| `--slider-edge-color` | `--main-color2` | Grip edge on the filled bar of `Range` |
 
-`--slider-edge-color` falls back to `--main-color2`, which is what the edge has always used.
-Set it only when your secondary colour sits too close to your primary one to keep the grip
-visible against the bar — darkening `--main-color2` instead would also darken the hover text
-and the `Number` arrows, which read the same variable.
+This one is read by a component but is deliberately absent from the `Colors` constant, because
+`Colors` is applied as an inline style on `Container` and would otherwise shadow a value you
+may have defined yourself at `:root`. Set it alongside `Colors` if you want to override the
+built-in fallback.
 
 
 ## License
