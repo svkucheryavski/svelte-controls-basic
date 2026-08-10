@@ -189,11 +189,11 @@
    }
 
    .button-small > svg > :global(polygon) {
-      fill: var(--main-color2, #4777a4);
+      fill: var(--main-color2, #1a4972);
    }
 
    .button-small:hover:not(:disabled) > svg > :global(polygon) {
-      fill: var(--main-color1, #6eb8ff);
+      fill: var(--main-color1, #2a75b8);
    }
 
 

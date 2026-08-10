@@ -230,7 +230,7 @@
       cursor: default;
       user-select: none;
       color: var(--text-color-light, #fafafa);
-      background-color: var(--main-color1, #6eb8ff);
+      background-color: var(--main-color1, #2a75b8);
    }
 
    .range-slider_left {

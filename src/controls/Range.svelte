@@ -231,12 +231,14 @@
       cursor: default;
       user-select: none;
       color: var(--text-color-light, #fafafa);
-      background-color: var(--main-color1, #6eb8ff);
+      background-color: var(--main-color1, #2a75b8);
       /* the edge marks the grip and has to stay apart from the bar it sits on. It follows
          '--main-color2' unless '--slider-edge-color' is set, so a theme whose secondary
          colour is close to the primary one can darken just this edge and leave the hover
-         text, which also reads '--main-color2', where it is */
-      border-right-color: var(--slider-edge-color, var(--main-color2, #4777a4));
+         text, which also reads '--main-color2', where it is. The last fallback is reached
+         only when neither variable is set, so it is the edge of the default palette and
+         not the default of '--main-color2', which would sit too close to the bar */
+      border-right-color: var(--slider-edge-color, var(--main-color2, #15395a));
    }
 
    .range-slider_right {

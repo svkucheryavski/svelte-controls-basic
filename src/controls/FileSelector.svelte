@@ -166,7 +166,7 @@
    }
 
    .file-selector:has(input:focus-visible) > label::before {
-      color: var(--main-color1, #6eb8ff);
+      color: var(--main-color1, #2a75b8);
    }
 
    .file-selector > label::before {
@@ -179,7 +179,7 @@
    }
 
    .file-selector:hover:not(.disabled) > label::before {
-      color: var(--main-color1, #6eb8ff);
+      color: var(--main-color1, #2a75b8);
    }
 
    .file-selector.disabled {
@@ -187,13 +187,13 @@
    }
 
    .file-selector.dragging {
-      background-color: var(--main-color1-light, #6eb8ff20);
-      outline: dashed 2px var(--main-color1, #6eb8ff);
+      background-color: var(--main-color1-light, #2a75b820);
+      outline: dashed 2px var(--main-color1, #2a75b8);
       outline-offset: 2px;
    }
 
    .file-selector.dragging > label::before {
-      color: var(--main-color1, #6eb8ff);
+      color: var(--main-color1, #2a75b8);
    }
 
    .file-selector.rejected {
@@ -205,7 +205,7 @@
       font-size: 1.3em;
       letter-spacing: -.2em;
       font-weight: bold;
-      color: var(--main-color1, #6eb8ff);
+      color: var(--main-color1, #2a75b8);
    }
 
    .error {

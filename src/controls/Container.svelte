@@ -22,7 +22,7 @@
    You can also put any text inside container, tags `<p>` and `<h2>` will be styled nicely.
 
    If you provide status `'error'` the container will be shown using a specific warning color
-   (by default crimson) assuming that it contains an error message. Such a container also gets
+   (`--warning-color`) assuming that it contains an error message. Such a container also gets
    `role="alert"`, so that its content is announced when it appears - render it conditionally,
    as in the example below, and not with a `hidden` attribute.
 
@@ -101,7 +101,7 @@
    }
 
    .control-element.error {
-      background: var(--warning-color, crimson);
+      background: var(--warning-color, #b00d2f);
       color: var(--warning-text-color, #fefafa);
    }
 

@@ -32,7 +32,7 @@
    }
 
    button:hover:not(:disabled) {
-      background-color: var(--main-color1, #6eb8ff);
+      background-color: var(--main-color1, #2a75b8);
    }
 
    button:disabled {
@@ -56,7 +56,7 @@
    }
 
    .button-cancel:hover {
-      background-color: var(--warning-color, crimson);
+      background-color: var(--warning-color, #b00d2f);
    }
 
    .button-undo {

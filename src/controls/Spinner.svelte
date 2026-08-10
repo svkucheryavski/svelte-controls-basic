@@ -30,7 +30,7 @@
       margin: 0.1em;
       border-radius: 50%;
       border: 0.2em solid;
-      border-color: var(--main-color1, #6eb8ff) transparent var(--main-color1, #6eb8ff) transparent;
+      border-color: var(--main-color1, #2a75b8) transparent var(--main-color1, #2a75b8) transparent;
       animation: spinner 1.2s linear infinite;
    }
 

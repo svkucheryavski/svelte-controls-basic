@@ -32,9 +32,9 @@
    }
 
    button:hover:not(:disabled) {
-      border-color: var(--main-color1, #6eb8ff);
-      background-color: var(--main-color1-light, #6eb8ff20);
-      color: var(--main-color2, #4777a4);
+      border-color: var(--main-color1, #2a75b8);
+      background-color: var(--main-color1-light, #2a75b820);
+      color: var(--main-color2, #1a4972);
    }
 
    button:disabled {

@@ -72,7 +72,7 @@
       border: 1px solid;
       border-radius: 0.3em;
       outline: none;
-      background-color: var(--main-color1, #6eb8ff);
+      background-color: var(--main-color1, #2a75b8);
       color: var(--text-color-light, #fafafa);
    }
 
@@ -88,7 +88,7 @@
    }
 
    .textinput > input::placeholder {
-      color: var(--text-color-placeholder, #a0a0a0);
+      color: var(--text-color-placeholder, #6d6d6d);
    }
 
    .textinput > input:active::placeholder,
@@ -98,9 +98,9 @@
 
    .textinput > input:focus,
    .textinput > input:active {
-      border-color: var(--main-color1, #6eb8ff);
-      background-color: var(--main-color1-light, #6eb8ff20);
-      color: var(--main-color2, #4777a4);
+      border-color: var(--main-color1, #2a75b8);
+      background-color: var(--main-color1-light, #2a75b820);
+      color: var(--main-color2, #1a4972);
    }
 
    /* '--warning-color-dark' and not '--warning-color': the latter is the colour of a warning
@@ -110,9 +110,9 @@
    .textinput.error > input,
    .textinput.error > input:focus,
    .textinput.error > input:active {
-      color: var(--warning-color-dark, crimson);
+      color: var(--warning-color-dark, #b00d2f);
       background-color: var(--warning-color-light, #ffd5ce);
-      border-color: var(--warning-color-dark, crimson);
+      border-color: var(--warning-color-dark, #b00d2f);
    }
 
    .error-message {
@@ -123,7 +123,7 @@
       line-height: 1em;
       font-size: 0.75em;
       padding: 0.5em;
-      color: var(--warning-color-dark, crimson);
+      color: var(--warning-color-dark, #b00d2f);
       background-color: var(--warning-color-light, #ffd5ce);
    }
 </style>
