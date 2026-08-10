@@ -404,6 +404,12 @@ built-in fallback.
 | Variable | Default | Description |
 |---|---|---|
 | `--error-color` | `#f0a0a0` | Background of `FileSelector` when a dropped file is rejected |
+| `--slider-edge-color` | `--main-color2` | Grip edge on the filled bar of `Range` |
+
+`--slider-edge-color` falls back to `--main-color2`, which is what the edge has always used.
+Set it only when your secondary colour sits too close to your primary one to keep the grip
+visible against the bar — darkening `--main-color2` instead would also darken the hover text
+and the `Number` arrows, which read the same variable.
 
 
 ## License

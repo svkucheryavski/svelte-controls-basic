@@ -232,7 +232,11 @@
       user-select: none;
       color: var(--text-color-light, #fafafa);
       background-color: var(--main-color1, #6eb8ff);
-      border-right-color: var(--main-color2, #4777a4);
+      /* the edge marks the grip and has to stay apart from the bar it sits on. It follows
+         '--main-color2' unless '--slider-edge-color' is set, so a theme whose secondary
+         colour is close to the primary one can darken just this edge and leave the hover
+         text, which also reads '--main-color2', where it is */
+      border-right-color: var(--slider-edge-color, var(--main-color2, #4777a4));
    }
 
    .range-slider_right {
