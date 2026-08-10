@@ -405,18 +405,8 @@ The four warning variables come in two pairs, and mixing them up is easy: `--war
 **background** with `--warning-text-color` written on it, while `--warning-color-light` is a
 background with `--warning-color-dark` written on it. A theme that sets `--warning-color` to a
 pale shade — correct for a background — must also set `--warning-color-dark`, or the error text
-in `TextInput` inherits a pale colour on a pale background and becomes unreadable.
-
-### Additional variables (not part of `Colors`)
-
-| Variable | Default | Description |
-|---|---|---|
-| `--error-color` | `#f0a0a0` | Background of `FileSelector` when a dropped file is rejected |
-
-This one is read by a component but is deliberately absent from the `Colors` constant, because
-`Colors` is applied as an inline style on `Container` and would otherwise shadow a value you
-may have defined yourself at `:root`. Set it alongside `Colors` if you want to override the
-built-in fallback.
+in `TextInput` and the message of a rejected file in `FileSelector` inherit a pale colour on a
+pale background and become unreadable.
 
 
 ## License

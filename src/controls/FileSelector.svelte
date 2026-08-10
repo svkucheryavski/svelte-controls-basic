@@ -196,8 +196,12 @@
       color: var(--main-color1, #2a75b8);
    }
 
+   /* the same pair TextInput uses for an invalid value: a rejected file and a field which
+      does not validate are the same thing to a reader, so they look the same. The message
+      below sets '--warning-color-dark' to match, since it would otherwise inherit the
+      ordinary label colour from Container and be unreadable on this background */
    .file-selector.rejected {
-      background-color: var(--error-color, #f0a0a0);
+      background-color: var(--warning-color-light, #ffd5ce);
    }
 
    .file-selector.selected > label::before {
@@ -226,5 +230,6 @@
       margin: 0;
       padding: 0.2em;
       border-radius: 2px;
+      color: var(--warning-color-dark, #b00d2f);
    }
 </style>
