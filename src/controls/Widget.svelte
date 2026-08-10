@@ -8,6 +8,22 @@
    - `labelWidth` - width of the labels column, default: `13`.
    - `colors` - CSS variables for theming.
    - `disable` - if `true` all controls of the widget are disabled, default: `false`.
+
+   **The `options` descriptor**
+
+   Every entry is `{ name, label, el, props, default, hidden, hiddenWhen }`:
+
+   - `el` - the control component, `props` - the properties it is created with.
+   - `default` - value to use when `value` has no entry for this control.
+   - `label` - either a string or `(value) => string`, where `value` is the whole bound
+      object, so a label can be worded after another control's current selection.
+   - `hidden` - static boolean, for a control which makes no sense for this data at all.
+   - `hiddenWhen` - `(value) => boolean`, for a control which makes no sense for what the
+      user has currently selected.
+
+   `hidden` and `hiddenWhen` are combined with OR, so an interactive rule can never bring
+   back a control which the data rules out. A hidden control keeps its value in the bound
+   object - nothing is reset when it disappears.
 -->
 <script>
    import Container from "./Container.svelte";
@@ -70,11 +86,19 @@
       {#each Object.keys(options) as id (id)}
          {@const opt = options[id]}
          <!-- a control is only created once its value exists: bound to 'undefined' it would
-              throw, and one which silently corrects the value would overwrite the default -->
-         {#if !opt.hidden && value[id] !== undefined}
-         <Container name={opt.name} label={opt.label} {labelWidth} {colors}>
-         <opt.el {...opt.props} disable={isDisabled(opt)} bind:value={value[id]}/>
-         </Container>
+              throw, and one which silently corrects the value would overwrite the default.
+
+              'hidden' and 'hiddenWhen' are combined with OR and neither can cancel the other:
+              'hidden' says the control is impossible for this data, 'hiddenWhen' says it is
+              not applicable to what the user has currently selected. A single field taking
+              either a boolean or a function would let the second answer erase the first -->
+         {#if value[id] !== undefined && !(opt.hidden || opt.hiddenWhen?.(value))}
+            <!-- resolved inside the '{#if}', so neither callback runs for a control which is
+                 not rendered. Reading 'value' here is what subscribes the block to it -->
+            {@const label = typeof opt.label === 'function' ? opt.label(value) : opt.label}
+            <Container name={opt.name} {label} {labelWidth} {colors}>
+            <opt.el {...opt.props} disable={isDisabled(opt)} bind:value={value[id]}/>
+            </Container>
          {/if}
       {/each}
    {/if}

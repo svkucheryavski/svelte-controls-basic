@@ -317,13 +317,54 @@ const options = {
 };
 ```
 
-Each entry in `options` is `{ name, label, el: ComponentClass, props, default, hidden }`. Every
-entry should have a `default` — it is what the bound `value` is initialised with. An entry that
-has neither a `default` nor an existing value in `value` is reported on the console and its
-control is skipped, so one incomplete entry does not take the rest of the widget down.
+Each entry in `options` describes one control:
+
+| Field | Type | Description |
+|---|---|---|
+| `el` | component | The control to render, e.g. `Select` |
+| `props` | object | Properties the control is created with |
+| `default` | any | Value the bound `value` is initialised with |
+| `label` | `string` or `(value) => string` | Text in the label column |
+| `name` | string | Extra CSS class on the control's `Container` |
+| `hidden` | boolean | Hide the control outright |
+| `hiddenWhen` | `(value) => boolean` | Hide it based on the current values |
+
+Every entry should have a `default`. An entry that has neither a `default` nor an existing
+value in `value` is reported on the console and its control is skipped, so one incomplete
+entry does not take the rest of the widget down.
 
 A `value` object that was built for an older, shorter `options` is filled in from the missing
 entries' `default`, so widget settings can be persisted and reused after new options are added.
+
+#### Conditional labels and visibility
+
+`label` and `hiddenWhen` both receive the widget's **whole** bound value object, so a control
+can react to what the user has selected in any other control of the same widget:
+
+```svelte
+const options = {
+   mode: { label: 'mode', el: Select, props: { options: ['single', 'both'] }, default: 'single' },
+   stat: {
+      el: Switch, default: false,
+      label: (v) => v.mode === 'single' ? 'FoM (single)' : 'FoM',
+      hidden: resobj.Yref === null,          // this data has no reference values at all
+      hiddenWhen: (v) => v.mode === 'both',  // not applicable to the current selection
+   },
+};
+```
+
+`hidden` and `hiddenWhen` are combined with **OR**. They answer different questions — `hidden`
+says the control is impossible for this data, `hiddenWhen` says it does not apply to the
+current selection — and neither can cancel the other, so an interactive rule can never bring
+back a control that the data rules out.
+
+A hidden control **keeps its value** in the bound object; nothing is reset when it disappears,
+and it comes back with the same value. Whether a parameter that is currently hidden should be
+forgotten is the application's decision, not the widget's.
+
+Because both fields are evaluated during render, an `options` map never has to be mutated
+after it is built — it can be a plain constant or a `$derived` value rather than `$state`.
+This works as long as the object bound to `value` is reactive, which is the usual case.
 
 ### getDefaults
 
