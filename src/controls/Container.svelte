@@ -102,7 +102,7 @@
 
    .control-element.error {
       background: var(--warning-color, crimson);
-      color: var(--warning-text-color, #fefefe);
+      color: var(--warning-text-color, #fefafa);
    }
 
 
@@ -144,7 +144,7 @@
    }
 
    :global(.control-element.error a) {
-      color: var(--warning-link-color, #ffeeaa);
+      color: var(--warning-link-color, #fae550);
    }
 
    :global(.control-element.error a:hover) {

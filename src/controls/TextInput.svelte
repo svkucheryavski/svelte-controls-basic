@@ -73,7 +73,7 @@
       border-radius: 0.3em;
       outline: none;
       background-color: var(--main-color1, #6eb8ff);
-      color: var(--text-color-light, #fefefe);
+      color: var(--text-color-light, #fafafa);
    }
 
    .textinput > input:disabled {
@@ -82,7 +82,7 @@
    }
 
    .textinput > input:placeholder-shown {
-      color: var(--text-color-dark, #a0a0a0);
+      color: var(--text-color-dark, #606570);
       background-color: var(--bg-color-light, #f0f0f0);
       border-color: var(--bg-color-light, #f0f0f0);
    }

@@ -135,16 +135,16 @@
    }
 
    .option :global(svg) {
-      stroke: var(--main-color1, #606570);
+      stroke: var(--main-color1, #6eb8ff);
    }
 
    .option.selected {
       background-color: var(--main-color1, #6eb8ff);
-      color: var(--text-color-light, #fefefe);
+      color: var(--text-color-light, #fafafa);
    }
 
    .option.selected :global(svg) {
-      stroke: var(--text-color-light, #fefefe);
+      stroke: var(--text-color-light, #fafafa);
    }
 
    .option:not(.selected):hover:not(:disabled) {

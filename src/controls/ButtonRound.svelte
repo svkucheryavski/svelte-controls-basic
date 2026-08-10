@@ -56,7 +56,7 @@
    }
 
    .button-cancel:hover {
-      background-color: var(--warning-color, #dc143c);
+      background-color: var(--warning-color, crimson);
    }
 
    .button-undo {

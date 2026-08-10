@@ -102,7 +102,7 @@
 
    .option.selected {
       background-color: var(--main-color1, #6eb8ff);
-      color: var(--text-color-light, #fefefe);
+      color: var(--text-color-light, #fafafa);
    }
 
    .option:not(.selected):hover:not(:disabled) {

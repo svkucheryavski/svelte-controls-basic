@@ -232,7 +232,7 @@
       user-select: none;
       color: var(--text-color-light, #fafafa);
       background-color: var(--main-color1, #6eb8ff);
-      border-right-color: var(--main-color2, #528abe);
+      border-right-color: var(--main-color2, #4777a4);
    }
 
    .range-slider_right {
