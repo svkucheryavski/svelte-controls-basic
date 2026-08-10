@@ -129,7 +129,7 @@ Boolean toggle built on top of `Select`. Maps two string options to `true`/`fals
 
 ### Number
 
-Number input with increment/decrement buttons and arrow key support.
+Number input with increment/decrement buttons and keyboard support (arrows, `Home`, `End`).
 
 ```svelte
 <Number bind:value={fontSize} min={8} max={72} decNum={0} />
@@ -143,7 +143,13 @@ Number input with increment/decrement buttons and arrow key support.
 | `decNum` | `1` | Decimal places |
 | `step` | `10^(-decNum)` | Increment step |
 | `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name for the selector |
 | `onchange` | `null` | Callback when value changes |
+
+Every value the selector produces is snapped to the grid `min + k * step`, so repeated steps do
+not accumulate rounding errors — ten increments of `0.1` from `0` give exactly `1`, not
+`0.9999999999999999`. A value coming from the parent is only brought into the `[min, max]`
+range and is otherwise left as it is.
 
 > **Note on the export name.** This component is exported as `Number`, which shadows the
 > JavaScript global of the same name in the module that imports it — `Number(x)` and
