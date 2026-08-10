@@ -2,7 +2,7 @@
 @component Plot type selector with icons of plots.
 
    Main properties:
-   - `options` - array with types to select from, default: ` ['p', 'l', 'b', 'h']`.
+   - `options` - array with types to select from, default: `['p', 'l', 'b', 'h', 'qq']`.
    - `value` - the selected type (string), default: first option.
 
    The list of supported types:
@@ -12,6 +12,9 @@
    - `'h'` - bars
    - `'hm'` - heatmap
    - `'bp'` - boxplot
+   - `'qq'` - qq-plot
+
+   Types which are not in the list above are shown as an empty button.
 -->
 <script>
    let {
@@ -67,13 +70,19 @@
       'h': 'bar',
       'qq': 'qq-plot',
    }
+
+   /* look up icon and title only among own keys, so that an unknown option (or a key
+      inherited from Object.prototype) can not inject anything into the markup */
+   const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+   const iconFor = (o) => hasOwn(icons, o) ? icons[o] : '';
+   const titleFor = (o) => hasOwn(titles, o) ? titles[o] : undefined;
 </script>
 
 
 <div onkeydown={changeOption} role="radiogroup" tabindex="0" class="selector plot-selector">
    {#each options as option (option)}
-   <button tabindex="-1" onclick={() => selectOption(option)} class="option" title={titles[option]} class:selected={option===value}>
-   {@html prefix + icons[option] + '</svg>'}
+   <button tabindex="-1" onclick={() => selectOption(option)} class="option" title={titleFor(option)} class:selected={option===value}>
+   {@html prefix + iconFor(option) + '</svg>'}
    </button>
    {/each}
 </div>

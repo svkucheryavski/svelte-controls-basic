@@ -138,6 +138,11 @@ Number input with increment/decrement buttons and arrow key support.
 | `step` | `10^(-decNum)` | Increment step |
 | `onchange` | `null` | Callback when value changes |
 
+> **Note on the export name.** This component is exported as `Number`, which shadows the
+> JavaScript global of the same name in the module that imports it — `Number(x)` and
+> `Number.isFinite(x)` will stop working in that file. Import it under an alias if you need
+> the global: `import { Number as NumberInput } from 'svelte-controls-basic';`
+
 ### TextInput
 
 Text input with optional validation.
@@ -211,12 +216,13 @@ Simple text button.
 
 ### Icon buttons
 
-Round icon buttons: `ButtonCancel`, `ButtonUndo`, `ButtonAdd`, `ButtonDownload`, `ButtonUp`, `ButtonDown`, `ButtonSettings`. All share the same API:
+Round icon buttons: `ButtonCancel`, `ButtonUndo`, `ButtonAdd`, `ButtonDownload`, `ButtonUpload`, `ButtonUp`, `ButtonDown`, `ButtonSettings`. All share the same API:
 
 ```svelte
 <ButtonAdd onclick={() => addItem()} />
 <ButtonCancel onclick={() => reset()} />
 <ButtonDownload onclick={() => saveFile()} disable={!hasData} />
+<ButtonUpload onclick={() => loadFile()} />
 ```
 
 | Property | Default | Description |
@@ -261,7 +267,32 @@ Combines multiple controls into a group, producing a single bindable JSON value.
 | `labelWidth` | `13` | Label width in `ch` units |
 | `colors` | `''` | CSS variables string for theming |
 
-Each entry in `options` is `{ name, label, el: ComponentClass, props, default, hidden }`.
+Each entry in `options` is `{ name, label, el: ComponentClass, props, default, hidden }`. Every
+entry must have a `default` — it is what the bound `value` is initialised with, and a control
+bound to `undefined` raises a Svelte error.
+
+### getDefaults
+
+Helper that builds the initial `value` object for a `Widget` from the same `options`
+configuration, so a widget's values can be created (or reset) without rendering it.
+
+```svelte
+<script>
+   import { Widget, getDefaults, Select, Range } from 'svelte-controls-basic';
+
+   const options = {
+      method: { label: 'method', el: Select, props: { options: ['PCA', 'PLS'] }, default: 'PCA' },
+      ncomp:  { label: 'components', el: Range, props: { min: 1, max: 20, decNum: 0 }, default: 5 },
+   };
+
+   let params = $state(getDefaults(options));   // { method: 'PCA', ncomp: 5 }
+</script>
+
+<Widget title="Settings" {options} bind:value={params} />
+<Button text="Reset" onclick={() => params = getDefaults(options)} />
+```
+
+It returns a plain object mapping each option name to its `default`.
 
 
 ## Theming
@@ -300,6 +331,17 @@ Available variables:
 | `--warning-link-hover-color` | `#ffee80` | Link hover color in error containers |
 | `--container-bg-color` | `#fff` | Container background |
 | `--container-bg-color-hover` | `#fafdff` | Container hover background |
+
+### Additional variables (not part of `Colors`)
+
+These are read by a component but are deliberately absent from the `Colors` constant, because
+`Colors` is applied as an inline style on `Container` and would otherwise shadow a value you
+may have defined yourself at `:root`. Set them alongside `Colors` if you want to override the
+built-in fallback.
+
+| Variable | Default | Description |
+|---|---|---|
+| `--error-color` | `#f0a0a0` | Background of `FileSelector` when a dropped file is rejected |
 
 
 ## License

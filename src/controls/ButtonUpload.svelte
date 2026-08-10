@@ -2,7 +2,7 @@
 @component Round button with upload icon and main color.
 
    Main properties:
-   - `title` - title (alternative text), default `'Download'`.
+   - `title` - title (alternative text), default `'Upload'`.
    - `onclick` - function (callback) to be called when user clicks on the button.
 -->
 <script>

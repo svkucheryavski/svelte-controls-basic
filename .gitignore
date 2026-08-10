@@ -5,3 +5,4 @@ package-lock.json
 *.tgz
 CLAUDE.md
 PLAN.md
+SPEC.md
