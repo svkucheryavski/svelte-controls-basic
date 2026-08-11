@@ -61,6 +61,7 @@ Wrapper for control elements. Provides label, theming, and stacking behavior (ro
 | `status` | `''` | Status class, use `'error'` for error styling |
 | `colors` | `''` | CSS variables string for theming |
 | `labelWidth` | `12` | Label width in `ch` units |
+| `id` | `null` | Id for the label, see [Naming controls](#naming-controls) |
 
 ### Range
 
@@ -114,6 +115,7 @@ Selector shown as a row of buttons.
 | `className` | `''` | Extra CSS class |
 | `disable` | `false` | Disabled state |
 | `html` | `true` | Render the options as HTML |
+| `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 Options are rendered as HTML, so a label can contain markup such as `'m<sup>2</sup>'`. Pass
@@ -133,6 +135,7 @@ Boolean toggle built on top of `Select`. Maps two string options to `true`/`fals
 | `options` | `["no", "yes"]` | Two option labels |
 | `value` | `false` | Boolean value (bindable) |
 | `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 ### Number
@@ -179,6 +182,7 @@ Text input with optional validation.
 | `maxLength` | `25` | Maximum character count |
 | `validator` | `null` | Function returning error message or `''` |
 | `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 The validator re-runs whenever the value or the validator itself changes, including changes
@@ -199,6 +203,7 @@ Color picker using the native HTML5 color input.
 |---|---|---|
 | `value` | `'#000000'` | Color value (bindable) |
 | `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 ### PlotTypeSelector
@@ -214,6 +219,7 @@ Selector with SVG icons for plot types: `'p'` (scatter), `'l'` (line), `'b'` (bo
 | `options` | `['p','l','b','h','qq']` | Plot types to show |
 | `value` | first option | Selected type (bindable) |
 | `disable` | `false` | Disabled state |
+| `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 ### FileSelector
@@ -403,6 +409,38 @@ configuration, so a widget's values can be created (or reset) without rendering 
 ```
 
 It returns a plain object mapping each option name to its `default`.
+
+
+## Naming controls
+
+Most controls here are built from `div`s and buttons rather than from a native `<select>` or
+`<input>`, so a screen reader has no name to read out for them. The label you put on the
+`Container` is only text sitting next to the control — nothing connects the two.
+
+There are two ways to connect them. Give the control its own name:
+
+```svelte
+<Container label="components">
+   <Range bind:value={ncomp} min={1} max={20} ariaLabel="components" />
+</Container>
+```
+
+Or give the `Container` an `id`, and every control inside it takes that label as its name
+without you writing the words a second time:
+
+```svelte
+<Container label="components" id="ncomp-label">
+   <Range bind:value={ncomp} min={1} max={20} />
+</Container>
+```
+
+The `id` must be unique on the page, which is why there is no default — a built-in one would
+be the same string in every container, and two labels sharing an id make a screen reader
+announce the wrong one, which is worse than announcing nothing. An `ariaLabel` on the control
+always wins over the container's label.
+
+This works for `Range`, `RangeDiscrete`, `Number`, `Select`, `Switch`, `TextInput`, `Color`
+and `PlotTypeSelector`.
 
 
 ## Theming

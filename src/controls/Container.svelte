@@ -51,21 +51,32 @@
 ```
 -->
 <script>
+   import { setContext } from 'svelte';
+   import { LabelIdKey } from './utils.js';
+
    let {
       label = null,
       name = '',
       status = '',
       colors = '',
       labelWidth = 12,
+      id = null,
       children
    } = $props();
+
+   /* the label is already on the screen, so a control inside this container should not have to
+      be given the same words again as its 'ariaLabel' - it reads this and points at the label
+      instead. Off unless an 'id' is given: a built-in default would be the same string in
+      every container, and two labels sharing an id make a reader announce the wrong one,
+      which is worse than announcing none */
+   setContext(LabelIdKey, () => (label && id ? id : undefined));
 </script>
 
 <!-- an error is otherwise told apart by its color only, which assistive technology can not
      report - the role makes the message announced when it shows up -->
 <div class="control-element {name} {status}" style={colors} role={status === 'error' ? 'alert' : undefined}>
    {#if label}
-   <span class="label" style="flex-basis:{labelWidth}ch;">{label}</span>
+   <span class="label" id={id ?? undefined} style="flex-basis:{labelWidth}ch;">{label}</span>
    {/if}
    {@render children?.()}
 </div>

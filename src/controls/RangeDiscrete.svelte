@@ -14,7 +14,8 @@
    are moved to the closest value which does.
 -->
 <script>
-   import { clamp, snapToStep, toFiniteNumber } from './utils.js';
+   import { getContext } from 'svelte';
+   import { clamp, snapToStep, toFiniteNumber, LabelIdKey } from './utils.js';
 
    let {
       min: minProp = 0,                          // smallest value of the range
@@ -25,6 +26,11 @@
       ariaLabel = null,                          // accessible name
       onchange = null                            // callback when value changes
    } = $props();
+
+   /* a control which is not given an 'ariaLabel' of its own takes the label of the Container
+      it sits in, when that container was given an 'id' */
+   const containerLabel = getContext(LabelIdKey);
+   const labelledBy = $derived(ariaLabel ? undefined : containerLabel?.());
 
    /* see the comment in Range.svelte - the declaration order of the deriveds matters */
    const min = $derived(toFiniteNumber(minProp, 0));
@@ -156,6 +162,7 @@
    class:disabled={disable}
    tabindex={disable ? -1 : 0}
    aria-label={ariaLabel}
+   aria-labelledby={labelledBy}
    aria-valuenow={shown}
    aria-valuemin={min}
    aria-valuemax={max}

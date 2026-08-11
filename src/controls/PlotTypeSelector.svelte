@@ -18,12 +18,20 @@
    Types which are not in the list above are shown as an empty button.
 -->
 <script>
+   import { getContext } from 'svelte';
+   import { LabelIdKey } from './utils.js';
    let {
       options = ['p', 'l', 'b', 'h', 'qq'],    // list of types to show
       value = $bindable(options[0]),     // default plot type
       disable = false,                  // if true the selector ignores any input
       onchange = null,                  // callback when value changes
+      ariaLabel = null,                 // accessible name
    } = $props();
+
+   /* a control which is not given an 'ariaLabel' of its own takes the label of the Container
+      it sits in, when that container was given an 'id' */
+   const containerLabel = getContext(LabelIdKey);
+   const labelledBy = $derived(ariaLabel ? undefined : containerLabel?.());
 
    function selectOption(option) {
       if (Object.is(option, value)) return;
@@ -89,6 +97,8 @@
    class="selector plot-selector"
    class:disabled={disable}
    tabindex={disable ? -1 : 0}
+   aria-label={ariaLabel}
+   aria-labelledby={labelledBy}
    aria-disabled={disable || undefined}
 >
    {#each options as option (option)}

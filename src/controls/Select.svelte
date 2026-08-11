@@ -13,6 +13,8 @@
    server - otherwise they can bring any markup into the page.
 -->
 <script>
+   import { getContext } from 'svelte';
+   import { LabelIdKey } from './utils.js';
    let {
       options,                         // array with all options
       value = $bindable(options[0]),   // initial selected value
@@ -20,7 +22,13 @@
       disable = false,                 // if true the selector ignores any input
       html = true,                     // if true the options are rendered as HTML
       onchange = null,                 // callback when value changes
+      ariaLabel = null,                // accessible name
    } = $props();
+
+   /* a control which is not given an 'ariaLabel' of its own takes the label of the Container
+      it sits in, when that container was given an 'id' */
+   const containerLabel = getContext(LabelIdKey);
+   const labelledBy = $derived(ariaLabel ? undefined : containerLabel?.());
 
    function selectOption(option) {
       if (Object.is(option, value)) return;
@@ -59,6 +67,8 @@
    class="selector {className}"
    class:disabled={disable}
    tabindex={disable ? -1 : 0}
+   aria-label={ariaLabel}
+   aria-labelledby={labelledBy}
    aria-disabled={disable || undefined}
 >
    {#each options as option (option)}

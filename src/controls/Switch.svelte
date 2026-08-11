@@ -14,6 +14,7 @@
       value = $bindable(false),        // initial selected value
       disable = false,                 // if true the switch ignores any input
       onchange = null,                 // callback when value changes
+      ariaLabel = null,                // accessible name
    } = $props();
 
    let selectValue = $state(value ? options[1] : options[0]);
@@ -40,5 +41,7 @@
 </script>
 
 {#if cleanOptions}
-<Select options={cleanOptions} bind:value={selectValue} {disable} onchange={handleSelect} />
+<!-- the Select finds a Container's label by itself, only an explicit name has to be
+     handed down -->
+<Select options={cleanOptions} bind:value={selectValue} {disable} {ariaLabel} onchange={handleSelect} />
 {/if}

@@ -24,6 +24,12 @@ export const Colors = '\
 --slider-edge-color: #15395a;\
 ';
 
+/* Key a Container publishes the id of its label under, so a control placed inside it can name
+   itself with 'aria-labelledby' rather than being given the same words again. The published
+   value is a function, so a control reads the label as it is now and not as it first was. */
+export const LabelIdKey = 'svelte-controls-basic/label-id';
+
+
 export function getDefaults(options) {
    const out = {};
    for(const opt of Object.keys(options)) {

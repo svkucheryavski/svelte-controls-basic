@@ -13,6 +13,8 @@
    form does not open with error messages on the fields nobody has filled in yet.
 -->
 <script>
+   import { getContext } from 'svelte';
+   import { LabelIdKey } from './utils.js';
    let {
       value = $bindable(''),        // initial selected value
       className = '',               // extra class name
@@ -21,7 +23,13 @@
       validator = null,             // validator callback, returns error message if value is not valid (empty if it is).
       disable = false,              // if true the input ignores any input
       onchange = null,              // callback when value changes
+      ariaLabel = null,             // accessible name
    } = $props();
+
+   /* a control which is not given an 'ariaLabel' of its own takes the label of the Container
+      it sits in, when that container was given an 'id' */
+   const containerLabel = getContext(LabelIdKey);
+   const labelledBy = $derived(ariaLabel ? undefined : containerLabel?.());
 
    /* derived and not set from the input handler, so that a value or a validator replaced by
       the parent does not leave an outdated message on the screen.
@@ -44,7 +52,7 @@
 </script>
 
 <div class="textinput {className}" class:error={error !== ''}>
-<input type="text" {placeholder} maxlength={maxLength} disabled={disable} bind:value={value} oninput={handleInput}>
+<input type="text" aria-label={ariaLabel} aria-labelledby={labelledBy} {placeholder} maxlength={maxLength} disabled={disable} bind:value={value} oninput={handleInput}>
 {#if error !== ''}<div class="error-message">{error}</div>{/if}
 </div>
 

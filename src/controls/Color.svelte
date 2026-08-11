@@ -6,11 +6,19 @@
    - `disable` - if `true` the picker does not react to any input, default: `false`.
 -->
 <script>
+   import { getContext } from 'svelte';
+   import { LabelIdKey } from './utils.js';
    let {
       value = $bindable('#000000'),   // initial selected value
       disable = false,               // if true the picker ignores any input
       onchange = null,               // callback when value changes
+      ariaLabel = null,              // accessible name
    } = $props();
+
+   /* a control which is not given an 'ariaLabel' of its own takes the label of the Container
+      it sits in, when that container was given an 'id' */
+   const containerLabel = getContext(LabelIdKey);
+   const labelledBy = $derived(ariaLabel ? undefined : containerLabel?.());
 
    function handleInput() {
       if (onchange) onchange(value);
@@ -18,7 +26,7 @@
 </script>
 
 <label class="color-picker" class:disabled={disable} style="background-color:{value}">
-<input type="color" disabled={disable} bind:value={value} oninput={handleInput}>
+<input type="color" aria-label={ariaLabel} aria-labelledby={labelledBy} disabled={disable} bind:value={value} oninput={handleInput}>
 </label>
 
 <style>
