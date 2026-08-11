@@ -362,6 +362,16 @@ A hidden control **keeps its value** in the bound object; nothing is reset when 
 and it comes back with the same value. Whether a parameter that is currently hidden should be
 forgotten is the application's decision, not the widget's.
 
+Both callbacks run while the widget renders, so they must be **synchronous and side effect
+free** — writing to the values object from inside one is an error in Svelte, and returning a
+promise hides the control, because a promise is always truthy. The object they receive always
+has an entry for every option: until the widget has written the `default`s into the bound
+object, the callbacks are handed a copy with the missing ones filled in, so a predicate can
+read a sibling on the very first render without having to guard against `undefined`.
+
+A callback that throws costs only its own control: that one is hidden, the error is reported
+once on the console, and the rest of the widget renders as usual.
+
 Because both fields are evaluated during render, an `options` map never has to be mutated
 after it is built — it can be a plain constant or a `$derived` value rather than `$state`.
 This works as long as the object bound to `value` is reactive, which is the usual case.
