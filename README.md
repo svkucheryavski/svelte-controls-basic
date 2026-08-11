@@ -2,6 +2,9 @@
 
 `svelte-controls-basic` is a [Svelte 5](https://svelte.dev) component library for creating simple UI control widgets — buttons, sliders, selectors, inputs, and more. All components use Svelte 5 runes and support theming via CSS custom properties.
 
+The controls are meant to be rendered in the browser. They are not tested against server-side
+rendering, so nothing here promises to survive being rendered on a server and hydrated.
+
 
 ## Installation
 

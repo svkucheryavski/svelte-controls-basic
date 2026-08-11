@@ -31,8 +31,8 @@
    } = $props();
 
    /* the limits are derived and not used as they come, so that a slider stays usable when a
-      parent sends something odd. Declaration order matters: on the server side the deriveds
-      are evaluated eagerly, in the order they are written */
+      parent sends something odd. Declaration order matters: a derived which reads another
+      one has to come after it */
    const min = $derived(toFiniteNumber(minProp, 0));
    const max = $derived(Math.max(min, toFiniteNumber(maxProp, 100)));
    const step = $derived(
@@ -43,8 +43,8 @@
    const decNum = $derived(Math.max(0, Math.min(20, Math.trunc(toFiniteNumber(decNumProp, 1)))));
 
    /* value to draw and to report to assistive technology. It is derived and not taken from
-      'value' directly, so the slider is also correct when rendered on the server, where the
-      correcting effect below does not run */
+      'value' directly, so the slider is already right on the first render - the effect below
+      only corrects 'value' afterwards */
    const shown = $derived(clamp(toFiniteNumber(value, min), min, max));
    const width = $derived(max === min ? 100 : (shown - min) / (max - min) * 100);
 
