@@ -12,6 +12,12 @@
    Set `html={false}` when the options do not come from you but from a user, a URL or a
    server - otherwise they can bring any markup into the page.
 -->
+<script module>
+   /* every selector needs ids of its own, so that its 'aria-activedescendant' points at one
+      of its own options when several selectors sit on the same page */
+   let instances = 0;
+</script>
+
 <script>
    let {
       options,                         // array with all options
@@ -21,6 +27,13 @@
       html = true,                     // if true the options are rendered as HTML
       onchange = null,                 // callback when value changes
    } = $props();
+
+   const uid = `scb-select-${instances++}`;
+
+   /* which option is current. It is marked with 'aria-checked' and named by the group's
+      'aria-activedescendant': the class only paints it, and a class is invisible to a
+      screen reader, so without these the choice is announced to nobody */
+   const selected = $derived(options.findIndex(v => Object.is(v, value)));
 
    function selectOption(option) {
       if (Object.is(option, value)) return;
@@ -60,9 +73,10 @@
    class:disabled={disable}
    tabindex={disable ? -1 : 0}
    aria-disabled={disable || undefined}
+   aria-activedescendant={selected >= 0 ? `${uid}-${selected}` : undefined}
 >
-   {#each options as option (option)}
-   <button type="button" tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option option_{option.toString().replaceAll('.', '_')}" class:selected={option===value}>
+   {#each options as option, i (option)}
+   <button type="button" id="{uid}-{i}" role="radio" aria-checked={option === value} tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option option_{option.toString().replaceAll('.', '_')}" class:selected={option===value}>
    {#if html}{@html option}{:else}{option}{/if}
    </button>
    {/each}

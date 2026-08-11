@@ -17,6 +17,12 @@
 
    Types which are not in the list above are shown as an empty button.
 -->
+<script module>
+   /* every selector needs ids of its own, so that its 'aria-activedescendant' points at one
+      of its own options when several selectors sit on the same page */
+   let instances = 0;
+</script>
+
 <script>
    let {
       options = ['p', 'l', 'b', 'h', 'qq'],    // list of types to show
@@ -24,6 +30,13 @@
       disable = false,                  // if true the selector ignores any input
       onchange = null,                  // callback when value changes
    } = $props();
+
+   const uid = `scb-plottype-${instances++}`;
+
+   /* which option is current. It is marked with 'aria-checked' and named by the group's
+      'aria-activedescendant': these buttons carry an icon and no text, so without them a
+      screen reader has neither a name nor a state to report */
+   const selected = $derived(options.findIndex(v => Object.is(v, value)));
 
    function selectOption(option) {
       if (Object.is(option, value)) return;
@@ -90,9 +103,10 @@
    class:disabled={disable}
    tabindex={disable ? -1 : 0}
    aria-disabled={disable || undefined}
+   aria-activedescendant={selected >= 0 ? `${uid}-${selected}` : undefined}
 >
-   {#each options as option (option)}
-   <button type="button" tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option" title={titleFor(option)} class:selected={option===value}>
+   {#each options as option, i (option)}
+   <button type="button" id="{uid}-{i}" role="radio" aria-checked={option === value} aria-label={titleFor(option) ?? option} tabindex="-1" disabled={disable} onclick={() => selectOption(option)} class="option" title={titleFor(option)} class:selected={option===value}>
    {@html prefix + iconFor(option) + '</svg>'}
    </button>
    {/each}
