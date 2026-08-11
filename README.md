@@ -179,8 +179,10 @@ Text input with optional validation.
 | `onchange` | `null` | Callback when value changes |
 
 The validator re-runs whenever the value or the validator itself changes, including changes
-made by the parent rather than by the user. The message is not shown for the value the input
-was created with, so a form does not open with error messages on fields nobody has touched.
+made by the parent rather than by the user. An empty field is never reported, so a form does
+not open with error messages on fields nobody has filled in yet. Anything else the validator
+rejects is reported for as long as it is rejected — including a value that arrives already
+invalid from the parent, and including after the input has been hidden and shown again.
 
 ### Color
 

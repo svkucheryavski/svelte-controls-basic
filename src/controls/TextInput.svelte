@@ -9,9 +9,8 @@
    - `disable` - if `true` the input does not react to any input, default: `false`.
 
    The validator is re-run whenever the value or the validator itself changes, also when the
-   change comes from the parent and not from the user. The message is however not shown for the
-   value the input was created with, so a form does not open with error messages on the fields
-   nobody has touched yet.
+   change comes from the parent and not from the user. An empty field is never reported, so a
+   form does not open with error messages on the fields nobody has filled in yet.
 -->
 <script>
    let {
@@ -24,14 +23,17 @@
       onchange = null,              // callback when value changes
    } = $props();
 
-   /* the value the input was created with - the message stays hidden as long as nothing has
-      changed it, so an untouched form does not open covered in error messages */
-   const initialValue = value;
-
    /* derived and not set from the input handler, so that a value or a validator replaced by
-      the parent does not leave an outdated message on the screen */
+      the parent does not leave an outdated message on the screen.
+
+      An empty field is never reported, so a form does not open covered in messages on the
+      fields nobody has filled in yet. That test is made on the value itself rather than on a
+      "this one has been edited" flag held by the component, because the input is destroyed
+      and built again every time it is hidden and shown - by a Widget's 'hiddenWhen', or by
+      any '{#if}' around it - and such a flag would come back cleared, leaving a field the
+      validator still rejects looking valid */
    const error = $derived.by(() => {
-      if (!validator || Object.is(value, initialValue)) return '';
+      if (!validator || value === '' || value === null || value === undefined) return '';
       const msg = validator(value);
       return typeof msg === 'string' ? msg : '';
    });
