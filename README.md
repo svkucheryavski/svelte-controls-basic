@@ -13,6 +13,28 @@ npm install svelte-controls-basic
 ```
 
 
+## Upgrading from 1.x
+
+Version 2.0.0 is the first release since `1.1.1`. Everything listed here changes the behaviour
+of code that already works — the rest of the release only adds things, and is listed in
+[NEWS.md](NEWS.md) together with the notes for all earlier versions.
+
+| Change | What to do |
+|---|---|
+| `Select` shows its options as **text**. Before, every option was rendered as HTML. | Pass `html={true}` if your options carry markup such as `'m<sup>2</sup>'`. Do not pass it if an option can come from a user, a URL or a server — that is the hole this closes. |
+| `Switch` labels are likewise text. | Same as above — `Switch` takes `html` too. |
+| The default palette in `Colors` was repainted so every pair of colours drawn on top of each other meets WCAG AA: `--main-color1` `#6eb8ff` → `#2a75b8`, `--main-color2` `#4777a4` → `#1a4972`, `--outline-color` `#ccc` → `#767676`, `--warning-color` `crimson` → `#b00d2f`. | Nothing, unless you want the old look back — then override those four after `Colors`. Be aware the old `--main-color1` is too light for the near-white text written on it. |
+| `--bg-color-light2` is gone; no component ever read it. | Drop it from your theme string, and from your own CSS if you referred to it. |
+| `Range`, `RangeDiscrete` and `Number` snap the value to the grid `min + k * step` and pull a non-numeric or out-of-range value back into range. The correction is reported through `onchange`. | Nothing, unless your `onchange` assumed it only runs after user input — it can now fire once on mount, when the value you passed in is not on the grid. |
+| `TextInput` re-runs the validator whenever the value or the validator changes, not only while the user types, and never reports an empty field. | Nothing, unless you relied on an empty field being shown as invalid. Check for the empty value in your own form logic instead. |
+| A `Widget`'s bound value gains a key for every option that has a `default` but no value yet. | Nothing. This is what makes settings saved against an older, shorter `options` usable again. |
+
+Everything else in this release is additive: `disable` on every control, `ariaLabel` and
+[naming through the container](#naming-controls), `hiddenWhen` and a callable `label` on
+`Widget` options, `type` on `Button`, `label` on `Spinner`, and the new
+`--text-color-placeholder`, `--warning-color-dark` and `--slider-edge-color` variables.
+
+
 ## Quick start
 
 Every control is typically placed inside a `Container`, which provides layout (label + content) and theming. All components have built-in default colors, so no extra setup is needed:
@@ -79,7 +101,7 @@ Continuous range slider with mouse, touch, wheel, and keyboard support.
 | `decNum` | `1` | Decimal places to display |
 | `step` | `(max-min)/100` | Increment step |
 | `disable` | `false` | Disabled state |
-| `ariaLabel` | `null` | Accessible name for the slider |
+| `ariaLabel` | `null` | Accessible name for the slider, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 ### RangeDiscrete
@@ -97,7 +119,7 @@ Like `Range` but for discrete (integer) values with a striped background showing
 | `value` | `min` | Current value (bindable) |
 | `step` | `1` | Increment step |
 | `disable` | `false` | Disabled state |
-| `ariaLabel` | `null` | Accessible name for the slider |
+| `ariaLabel` | `null` | Accessible name for the slider, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 ### Select
@@ -135,6 +157,7 @@ Boolean toggle built on top of `Select`. Maps two string options to `true`/`fals
 | `options` | `["no", "yes"]` | Two option labels |
 | `value` | `false` | Boolean value (bindable) |
 | `disable` | `false` | Disabled state |
+| `html` | `false` | Render the two labels as HTML, with the same caveat as `Select` |
 | `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
@@ -154,7 +177,7 @@ Number input with increment/decrement buttons and keyboard support (arrows, `Hom
 | `decNum` | `1` | Decimal places |
 | `step` | `10^(-decNum)` | Increment step |
 | `disable` | `false` | Disabled state |
-| `ariaLabel` | `null` | Accessible name for the selector |
+| `ariaLabel` | `null` | Accessible name for the selector, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
 Every value the selector produces is snapped to the grid `min + k * step`, so repeated steps do
@@ -178,6 +201,7 @@ Text input with optional validation.
 | Property | Default | Description |
 |---|---|---|
 | `value` | `''` | Text value (bindable) |
+| `className` | `''` | Extra CSS class |
 | `placeholder` | `''` | Placeholder text |
 | `maxLength` | `25` | Maximum character count |
 | `validator` | `null` | Function returning error message or `''` |
