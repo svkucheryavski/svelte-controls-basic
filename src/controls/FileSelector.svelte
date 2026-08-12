@@ -220,16 +220,22 @@
       position: relative;
    }
 
+   /* the message covers the whole row: the four offsets pin it to the edges of the selector,
+      so its padding only insets the text and never changes its size. It needs a background of
+      its own - the one on the container is painted below the label, not between the label and
+      this box - and it is centred like a flex item, so the message sits on the same line the
+      file name sat on */
    .rejected .error {
-      display: block;
+      display: flex;
+      align-items: center;
       position: absolute;
       left: 0;
       top: 0;
       right: 0;
       bottom: 0;
       margin: 0;
-      padding: 0.2em;
-      border-radius: 2px;
+      padding: 0 0.5em;
+      background-color: var(--warning-color-light, #ffd5ce);
       color: var(--warning-color-dark, #b00d2f);
    }
 </style>
