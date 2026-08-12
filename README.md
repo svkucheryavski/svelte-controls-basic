@@ -114,13 +114,13 @@ Selector shown as a row of buttons.
 | `value` | first option | Selected value (bindable) |
 | `className` | `''` | Extra CSS class |
 | `disable` | `false` | Disabled state |
-| `html` | `true` | Render the options as HTML |
+| `html` | `false` | Render the options as HTML |
 | `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
-Options are rendered as HTML, so a label can contain markup such as `'m<sup>2</sup>'`. Pass
-`html={false}` when the options do not come from you but from a user, a URL or a server —
-otherwise they can bring arbitrary markup into the page.
+Options are shown as plain text. Pass `html={true}` when a label needs to carry markup such as
+`'m<sup>2</sup>'` — but only for options that are yours. An option coming from a user, a URL or
+a server can bring arbitrary markup into the page and must not be rendered that way.
 
 ### Switch
 

@@ -6,11 +6,12 @@
    - `value` - the selected value (string, bindable), default - the first option.
    - `className` - additional class name for building customized selects.
    - `disable` - if `true` the selector does not react to any input, default: `false`.
-   - `html` - if `true` the options are rendered as HTML, default: `true`.
+   - `html` - if `true` the options are rendered as HTML, default: `false`.
 
-   The options are rendered as HTML, so that they can contain markup, e.g. `'m<sup>2</sup>'`.
-   Set `html={false}` when the options do not come from you but from a user, a URL or a
-   server - otherwise they can bring any markup into the page.
+   Options are shown as plain text. Set `html={true}` when they need to carry markup, e.g.
+   `'m<sup>2</sup>'` - but only for options which are yours. An option which comes from a
+   user, a URL or a server can bring any markup into the page, so it must not be rendered
+   this way.
 -->
 <script>
    import { getContext } from 'svelte';
@@ -20,7 +21,7 @@
       value = $bindable(options[0]),   // initial selected value
       className = '',                  // extra class name
       disable = false,                 // if true the selector ignores any input
-      html = true,                     // if true the options are rendered as HTML
+      html = false,                    // if true the options are rendered as HTML
       onchange = null,                 // callback when value changes
       ariaLabel = null,                // accessible name
    } = $props();
