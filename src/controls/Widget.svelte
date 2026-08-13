@@ -144,12 +144,19 @@
    }
 </script>
 
-<div class="widget" >
+<!-- 'group' names the whole panel after its title, so a reader entering it is told what these
+     controls belong to instead of meeting them one by one with no context. Both attributes
+     wait for 'value' as well as 'title', because the heading they point at is rendered inside
+     the check below - naming a heading which is not on the page yet would leave the group
+     pointing at nothing. A group with no name is noise, so a title-less widget gets neither -->
+<div class="widget"
+   role={title && value ? 'group' : undefined}
+   aria-labelledby={title && value ? `${uid}-title` : undefined}>
    {#if value}
 
       {#if title}
       <Container {colors}>
-         <h2>{title}</h2>
+         <h2 id="{uid}-title">{title}</h2>
       </Container>
       {/if}
 
