@@ -5,6 +5,8 @@
 The controls are meant to be rendered in the browser. They are not tested against server-side
 rendering, so nothing here promises to survive being rendered on a server and hydrated.
 
+Requires **Svelte 5.22** or newer.
+
 
 ## Installation
 
@@ -466,6 +468,10 @@ always wins over the container's label.
 This works for `Range`, `RangeDiscrete`, `Number`, `Select`, `Switch`, `TextInput`, `Color`
 and `PlotTypeSelector`.
 
+Inside a [`Widget`](#widget) none of this is needed: it builds its own containers and gives each
+one an id, so every control is named by its option's `label` already. An `ariaLabel` in an
+option's `props` still wins, and a widget with a `title` is a group named after it.
+
 
 ## Theming
 
@@ -488,7 +494,7 @@ Available variables:
 |---|---|---|
 | `--outline-color` | `#767676` | Focus outline color |
 | `--text-color-dark` | `#606570` | Dark text / label color |
-| `--text-color-light` | `#fafafa` | Light text (on colored backgrounds) |
+| `--text-color-light` | `#fafafa` | Light text on colored backgrounds, and the icons of the round buttons |
 | `--text-color-placeholder` | `#6d6d6d` | Placeholder text in `TextInput` |
 | `--bg-color-light` | `#f0f0f0` | Light background |
 | `--bg-color-medium` | `#e0e0e0` | Track of `RangeDiscrete` between the steps |

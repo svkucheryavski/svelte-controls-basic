@@ -1,5 +1,35 @@
 # Release notes
 
+## 2.1.0
+
+**Requires Svelte 5.22 or newer** — up from 5.0. This is the one thing that can stop an
+existing project from installing, so read it as a breaking change even though the version is a
+minor one. Raising a peer range inside a major is treated as a minor by convention rather than
+by a strict reading of SemVer; this release follows the convention deliberately. The floor is
+what `$props.id()` needs, and 5.22 rather than 5.20 because that is where the counter behind it
+became unique across separately bundled copies of Svelte.
+
+**Fixed**
+
+* Every control rendered by a `Widget` was unnamed. A control takes its accessible name from
+  the label of its `Container`, but only when that container has an `id`, and `Widget` built
+  its containers without one — so a widget was the single place where the naming added in
+  2.0.0 could never fire. Each control is now named by its option's `label`, with nothing to
+  do on the consumer's side. An `ariaLabel` in an option's `props` still overrides it.
+
+**Accessibility**
+
+* A `Widget` with a `title` is now a group named after that title, so a reader entering the
+  panel is told what the controls belong to instead of meeting them one at a time. A widget
+  without a title is left alone — an unnamed group is noise.
+
+**Theming**
+
+* The icons of the round buttons follow `--text-color-light` instead of a hard-coded near
+  white, so a theme can recolour them. They are drawn as masks now rather than as background
+  images: a colour written inside a `data:` URI cannot be themed at all, because the URI is a
+  document of its own.
+
 ## 2.0.0 (2026-08-12)
 
 The first release since `1.1.1`. It is a major version because several controls now behave
