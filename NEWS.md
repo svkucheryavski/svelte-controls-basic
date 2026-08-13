@@ -1,6 +1,6 @@
 # Release notes
 
-## 2.1.0
+## 2.1.0 (2026-08-13)
 
 **Requires Svelte 5.22 or newer** — up from 5.0. This is the one thing that can stop an
 existing project from installing, so read it as a breaking change even though the version is a

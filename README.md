@@ -373,6 +373,30 @@ entry does not take the rest of the widget down.
 A `value` object that was built for an older, shorter `options` is filled in from the missing
 entries' `default`, so widget settings can be persisted and reused after new options are added.
 
+#### Names for screen readers
+
+An option's `label` is not only the text in the label column — it also becomes the control's
+accessible name, so a screen reader says what the control is for instead of only its role and
+value. This needs nothing from you, which is the one way a widget differs from a `Container`
+you write yourself: that one names the control inside it only when given an `id`, as described
+under [Naming controls](#naming-controls).
+
+It applies to the controls of this package which read that name — `Range`, `RangeDiscrete`,
+`Number`, `Select`, `Switch`, `TextInput`, `Color` and `PlotTypeSelector`. A control of your
+own is named only if it accepts `ariaLabel` and does the same.
+
+Pass `ariaLabel` through an option's `props` to override it, for a control whose label column
+reads shorter than what should be announced:
+
+```svelte
+const options = {
+   ncomp: { label: 'comp.', el: Range, props: { min: 1, max: 20, ariaLabel: 'number of components' } },
+};
+```
+
+A widget given a `title` is also a group named after it, so a reader entering the panel is told
+what the controls belong to.
+
 #### Conditional labels and visibility
 
 `label` and `hiddenWhen` both receive the widget's **whole** bound value object, so a control
