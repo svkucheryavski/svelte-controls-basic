@@ -11,6 +11,6 @@
    let {title = 'Move down', disable = false, onclick} = $props();
 </script>
 
-<ButtonRound {title} {disable} {onclick} className="button-down"/>
+<ButtonRound {title} {disable} {onclick} class="button-down"/>
 
 

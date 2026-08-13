@@ -11,6 +11,6 @@
    let {title = 'Undo', disable = false, onclick} = $props();
 </script>
 
-<ButtonRound {title} {disable} {onclick} className="button-undo"/>
+<ButtonRound {title} {disable} {onclick} class="button-undo"/>
 
 

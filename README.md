@@ -15,6 +15,16 @@ npm install svelte-controls-basic
 ```
 
 
+## Upgrading from 2.x
+
+Version 3.0.0 changes one thing, and nothing else in it can break working code.
+
+| Change | What to do |
+|---|---|
+| The extra class name of `Select` and `TextInput` is given as `class` and no longer as `className`. | Rename it: `<Select className="wide"/>` becomes `<Select class="wide"/>`. A property a component does not know is ignored silently, so a `className` left behind takes its styling with it and reports nothing. |
+
+`Button` gained a `class` of its own in the same release, which is additive.
+
 ## Upgrading from 1.x
 
 Version 2.0.0 is the first release since `1.1.1`. Everything listed here changes the behaviour
@@ -136,7 +146,7 @@ Selector shown as a row of buttons.
 |---|---|---|
 | `options` | | Array of option strings |
 | `value` | first option | Selected value (bindable) |
-| `className` | `''` | Extra CSS class |
+| `class` | `''` | Extra CSS class, see [Button](#button) |
 | `disable` | `false` | Disabled state |
 | `html` | `false` | Render the options as HTML |
 | `ariaLabel` | `null` | Accessible name, see [Naming controls](#naming-controls) |
@@ -203,7 +213,7 @@ Text input with optional validation.
 | Property | Default | Description |
 |---|---|---|
 | `value` | `''` | Text value (bindable) |
-| `className` | `''` | Extra CSS class |
+| `class` | `''` | Extra CSS class, see [Button](#button) |
 | `placeholder` | `''` | Placeholder text |
 | `maxLength` | `25` | Maximum character count |
 | `validator` | `null` | Function returning error message or `''` |
@@ -282,6 +292,20 @@ Simple text button.
 | `type` | `'button'` | Native button type, set to `'submit'` to submit a surrounding form |
 | `disable` | `false` | Disabled state |
 | `onclick` | | Click callback |
+| `class` | `''` | Extra CSS class, added next to the built-in `button` class |
+
+Svelte scopes styles to the component they are written in, and a class name passed as a
+property does not carry that scope — write the rule as `:global(...)` or it will be dropped as
+unused. The built-in rules are scoped and so outweigh a bare class; give the override a
+selector of its own weight:
+
+```svelte
+<Button text="Run" class="danger" onclick={() => runAnalysis()} />
+
+<style>
+   :global(.danger.danger) { background-color: #b00d2f; }
+</style>
+```
 
 ### Icon buttons
 

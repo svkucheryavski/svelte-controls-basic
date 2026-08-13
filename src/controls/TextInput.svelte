@@ -4,6 +4,7 @@
    Main properties:
    - `value` - the entered value, bindable, default: `''`.
    - `placeholder` - text for place holder, default: `''`.
+   - `class` - additional class name for building customized inputs.
    - `maxLength` - maximum number of symbols that can be entered, default: `25`.
    - `validator` - function to validate the input value (should return error message or empty string)
    - `disable` - if `true` the input does not react to any input, default: `false`.
@@ -17,7 +18,7 @@
    import { LabelIdKey } from './utils.js';
    let {
       value = $bindable(''),        // initial selected value
-      className = '',               // extra class name
+      class: className = '',        // extra class name
       placeholder = '',             // placeholder (hint)
       maxLength = 25,               // maximum number of characters
       validator = null,             // validator callback, returns error message if value is not valid (empty if it is).
@@ -51,7 +52,7 @@
    }
 </script>
 
-<div class="textinput {className}" class:error={error !== ''}>
+<div class={['textinput', className]} class:error={error !== ''}>
 <input type="text" aria-label={ariaLabel} aria-labelledby={labelledBy} {placeholder} maxlength={maxLength} disabled={disable} bind:value={value} oninput={handleInput}>
 {#if error !== ''}<div class="error-message">{error}</div>{/if}
 </div>

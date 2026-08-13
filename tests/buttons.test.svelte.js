@@ -49,6 +49,8 @@ function render(Comp, props = {}) {
    eq('and does not call back', b.clicks.length, 0);
 }
 
+/* the 'class' property is shared by several controls, so it is checked in its own suite */
+
 // ------------------------------------------------------------- the round buttons
 const ROUND = [
    ['ButtonCancel',   ButtonCancel,   'button-cancel',   'Reset'],

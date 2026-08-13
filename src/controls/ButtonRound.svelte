@@ -3,15 +3,17 @@
 
    Main properties:
    - `title` - title (alternative text).
-   - `className` - additional class name for styling the button.
+   - `class` - additional class name for styling the button.
    - `onclick` - function (callback) to be called when user clicks on the button.
    - `disable` - if `true` the button is disabled, default: `false`.
+
+   The class name is what selects the icon, see the eight buttons built on this one.
 -->
 <script>
-   let {title, className, disable = false, onclick} = $props();
+   let {title, class: className = '', disable = false, onclick} = $props();
 </script>
 
-<button type="button" {onclick} {title} aria-label={title} disabled={disable} class="button {className}"></button>
+<button type="button" {onclick} {title} aria-label={title} disabled={disable} class={['button', className]}></button>
 
 <style>
    button {

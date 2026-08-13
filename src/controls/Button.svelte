@@ -6,15 +6,21 @@
    - `onclick` - function (callback) to be called when user clicks on the button.
    - `disable` - if `true` the button is disabled, default: `false`.
    - `type` - type of the button, default: `'button'`.
+   - `class` - extra class name (or names) added next to the built in one.
 
    The default type is `'button'` and not `'submit'`, so that a button placed inside a form
    does not submit it. Set `type="submit"` explicitly if that is what you need.
+
+   Svelte scopes styles to the component they are written in, and a class name passed as a
+   property does not carry that scope - write the rule as `:global(.my-class)` or it will be
+   dropped as unused. The built in rules are scoped and therefore more specific than a bare
+   class, so an override needs a selector of its own weight, e.g. `:global(.my-class.my-class)`.
 -->
 <script>
-   let {text = 'button', type = 'button', disable = false, onclick} = $props();
+   let {text = 'button', type = 'button', disable = false, onclick, class: className = ''} = $props();
 </script>
 
-<button class="button" {type} {onclick} disabled={disable}>{text}</button>
+<button class={['button', className]} {type} {onclick} disabled={disable}>{text}</button>
 
 <style>
    button {

@@ -4,7 +4,7 @@
    Main properties:
    - `options` - array with options (strings).
    - `value` - the selected value (string, bindable), default - the first option.
-   - `className` - additional class name for building customized selects.
+   - `class` - additional class name for building customized selects.
    - `disable` - if `true` the selector does not react to any input, default: `false`.
    - `html` - if `true` the options are rendered as HTML, default: `false`.
 
@@ -19,7 +19,7 @@
    let {
       options,                         // array with all options
       value = $bindable(options[0]),   // initial selected value
-      className = '',                  // extra class name
+      class: className = '',           // extra class name
       disable = false,                 // if true the selector ignores any input
       html = false,                    // if true the options are rendered as HTML
       onchange = null,                 // callback when value changes
@@ -65,7 +65,7 @@
 <div
    onkeydown={changeOption}
    role="radiogroup"
-   class="selector {className}"
+   class={['selector', className]}
    class:disabled={disable}
    tabindex={disable ? -1 : 0}
    aria-label={ariaLabel}
