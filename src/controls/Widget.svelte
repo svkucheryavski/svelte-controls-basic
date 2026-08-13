@@ -6,6 +6,7 @@
    - `value` - JSON with the values of all controls (bindable).
    - `title` - title to show above the controls, default: `''`.
    - `labelWidth` - width of the labels column, default: `13`.
+   - `headingLevel` - depth of the title's heading, `2` to `6`, default: `2`.
    - `colors` - CSS variables for theming.
    - `disable` - if `true` all controls of the widget are disabled, default: `false`.
 
@@ -45,15 +46,22 @@
 -->
 <script>
    import Container from "./Container.svelte";
-   import { getDefaults } from "./utils.js";
+   import { clamp, getDefaults, toFiniteNumber } from "./utils.js";
    let {
       title = '',
       options,               // array with all options (see details)
       value = $bindable(),   // JSON with properties
       labelWidth = 13,
+      headingLevel = 2,      // depth of the title's heading, 2 to 6
       colors = '',           // CSS variables for theming
       disable = false,       // if true all controls of the widget are disabled
    } = $props();
+
+   /* the title is a heading, and a heading is only useful to a reader when it sits at the
+      right depth for the page around it - a widget inside a section under an 'h2' has to
+      say 'h3'. The level is sanitised rather than trusted, because an out of range one
+      would be written into the DOM as a tag which does not exist: HTML stops at 'h6' */
+   const heading = $derived(`h${clamp(Math.round(toFiniteNumber(headingLevel, 2)), 2, 6)}`);
 
    /* Ids for the labels this widget writes, so that the control under each label can name
       itself with it. A page can hold several widgets and two labels must never share an id,
@@ -170,7 +178,7 @@
 
       {#if title}
       <Container {colors}>
-         <h2 id="{uid}-title">{title}</h2>
+         <svelte:element this={heading} id="{uid}-title">{title}</svelte:element>
       </Container>
       {/if}
 

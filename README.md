@@ -342,8 +342,14 @@ Combines multiple controls into a group, producing a single bindable JSON value.
 | `options` | | Configuration object (see below) |
 | `value` | | JSON object with all values (bindable) |
 | `labelWidth` | `13` | Label width in `ch` units |
+| `headingLevel` | `2` | Heading level of the title, `2` to `6` |
 | `colors` | `''` | CSS variables string for theming |
 | `disable` | `false` | Disables every control of the widget |
+
+The title is rendered as a heading, `<h2>` by default. Set `headingLevel` to match the page
+around the widget — a widget inside a section whose own heading is an `<h2>` should use `3`, so
+the document outline a screen reader builds stays correct. Values outside `2…6` are pulled into
+that range, and every level is styled identically.
 
 Setting `disable` on the widget disables all of its controls. A single control can also be
 disabled on its own via `props`, and that stays in effect regardless of the widget-level value:

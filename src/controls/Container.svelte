@@ -19,7 +19,9 @@
    If several containers share the same parent, the first and the last ones will have slightly
    round borders. There will be a small margin (0.5px) between the containers in the stack.
 
-   You can also put any text inside container, tags `<p>` and `<h2>` will be styled nicely.
+   You can also put any text inside container, tags `<p>` and `<h2>` to `<h6>` will be styled
+   nicely. Every heading level looks the same - the level says where the heading sits in the
+   page outline, not how large it is.
 
    If you provide status `'error'` the container will be shown using a specific warning color
    (`--warning-color`) assuming that it contains an error message. Such a container also gets
@@ -134,7 +136,10 @@
       width: auto;
    }
 
-   .control-element > :global(h2) {
+   /* every level and not just 'h2': a Widget writes its title at whatever depth the page
+      around it needs, and the heading of a container should look the same either way -
+      what the level says is where the title sits in the outline, not how big it is */
+   .control-element > :global(:is(h2, h3, h4, h5, h6)) {
       text-align: left;
       flex-grow: 1;
       padding: 0 0.25em 0 0;
