@@ -41,6 +41,13 @@
       disable = false,       // if true all controls of the widget are disabled
    } = $props();
 
+   /* Ids for the labels this widget writes, so that the control under each label can name
+      itself with it. A page can hold several widgets and two labels must never share an id,
+      or a reader announces the wrong one - this is unique per component instance, and from
+      Svelte 5.22 the counter behind it lives on a window global, so it stays unique even on
+      a page which ended up with two separately bundled copies of the package. */
+   const uid = $props.id();
+
    const warned = new Set();
 
    $effect(() => {
@@ -146,7 +153,7 @@
       </Container>
       {/if}
 
-      {#each Object.keys(options) as id (id)}
+      {#each Object.keys(options) as id, i (id)}
          {@const opt = options[id]}
          <!-- a control is only created once its value exists: bound to 'undefined' it would
               throw, and one which silently corrects the value would overwrite the default -->
@@ -156,7 +163,10 @@
                  for a control which is not rendered -->
             {@const shown = resolve(id, opt)}
             {#if !shown.hidden}
-            <Container name={opt.name} label={shown.label} {labelWidth} {colors}>
+            <!-- the position and not the option key: a key is free to hold anything, and a
+                 key sanitised into an id can collide with another sanitised key, which is the
+                 very fault - two labels under one id - this exists to prevent -->
+            <Container name={opt.name} label={shown.label} id="{uid}-{i}" {labelWidth} {colors}>
             <opt.el {...opt.props} disable={isDisabled(opt)} bind:value={value[id]}/>
             </Container>
             {/if}
