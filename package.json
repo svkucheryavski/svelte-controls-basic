@@ -8,18 +8,33 @@
    "type": "module",
    "svelte": "./src/controls/index.js",
    "exports": {
-      ".":  { "svelte": "./src/controls/index.js", "default": "./src/controls/index.js" },
+      ".": {
+         "svelte": "./src/controls/index.js",
+         "default": "./src/controls/index.js"
+      },
       "./package.json": "./package.json"
+   },
+   "scripts": {
+      "test": "node tests/build.mjs && node --test --conditions=browser --import ./tests/env.mjs \"tests/build/*.test.js\""
    },
    "peerDependencies": {
       "svelte": "^5.22.0"
    },
    "devDependencies": {
+      "jsdom": "^30.0.1",
       "svelte": "^5.22.0"
    },
-   "keywords": ["svelte", "controls"],
-   "files": ["src", "NEWS.md"],
-   "sideEffects": ["**/*.css"],
+   "keywords": [
+      "svelte",
+      "controls"
+   ],
+   "files": [
+      "src",
+      "NEWS.md"
+   ],
+   "sideEffects": [
+      "**/*.css"
+   ],
    "repository": {
       "type": "git",
       "url": "git+https://github.com/svkucheryavski/svelte-controls-basic.git"
