@@ -1,5 +1,20 @@
 # Release notes
 
+## 2.2.0 (2026-08-13)
+
+**Added**
+
+* `Widget` takes a `headingLevel`, `2` to `6`, which sets the level its `title` is written at.
+  The title used to always be an `h2`, so a widget placed inside a section which already had
+  one produced a wrong document outline for a screen reader. The default is unchanged, and a
+  level outside the range is pulled into it — HTML has no `h7`. Every level is styled the same;
+  the level says where the heading sits in the outline, not how large it is.
+
+**Accessibility**
+
+* A `Container` now styles headings `h2` through `h6` and not `h2` alone, so a heading written
+  at any level looks the way it did before.
+
 ## 2.1.0 (2026-08-13)
 
 **Requires Svelte 5.22 or newer** — up from 5.0. This is the one thing that can stop an
