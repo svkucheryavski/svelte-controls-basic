@@ -28,6 +28,20 @@
    Both callbacks run during render and must be synchronous and free of side effects. They
    always see an entry for every option, defaults included, and one which throws hides only
    its own control.
+
+   **Names for assistive technology**
+
+   Each control of the widget is named by its option's `label`, with no work on your side -
+   unlike a hand-written `Container`, which names the control inside it only when it is given
+   an `id`. This covers the controls of this package which read that name (`Range`,
+   `RangeDiscrete`, `Number`, `Select`, `Switch`, `TextInput`, `Color`, `PlotTypeSelector`);
+   a control of your own is named only if it does the same.
+
+   An `ariaLabel` passed through an option's `props` still wins, for a control whose label
+   column says something shorter than the control needs announced.
+
+   A widget given a `title` is a group named after it, so a reader entering the panel is told
+   what the controls belong to.
 -->
 <script>
    import Container from "./Container.svelte";
