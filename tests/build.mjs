@@ -37,7 +37,8 @@ for (const file of readdirSync(here)) {
       const { js } = compileModule(code, { filename: file, generate: 'client', dev: false });
       writeFileSync(join(out, file.replace('.test.svelte.js', '.test.js')), js.code);
       suites++;
-   } else if (file === 'check.js') {
+   } else if (file.endsWith('.js') && !file.endsWith('.mjs')) {
+      /* the suites' own plain modules - helpers, not tests */
       copyFileSync(join(here, file), join(out, file));
    }
 }
