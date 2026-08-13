@@ -23,8 +23,6 @@
       ariaLabel = null,                // accessible name
    } = $props();
 
-   let selectValue = $state(value ? options[1] : options[0]);
-
    const cleanOptions = $derived.by(() => {
       if (options.length !== 2) {
          console.error('Switch: parameter "options" must have two values.');
@@ -34,8 +32,9 @@
       return options;
    });
 
-   // sync parent's value → selectValue
-   $effect(() => selectValue = value ? options[1] : options[0]);
+   /* the string the Select shows is the boolean read through the options, and nothing else -
+      no state of its own to fall out of step */
+   const selectValue = $derived(value ? options[1] : options[0]);
 
    // sync user selection → value (via Select's onchange, avoiding circular $effect)
    function handleSelect(selected) {
@@ -49,5 +48,5 @@
 {#if cleanOptions}
 <!-- the Select finds a Container's label by itself, only an explicit name has to be
      handed down -->
-<Select options={cleanOptions} bind:value={selectValue} {disable} {html} {ariaLabel} onchange={handleSelect} />
+<Select options={cleanOptions} value={selectValue} {disable} {html} {ariaLabel} onchange={handleSelect} />
 {/if}
