@@ -8,6 +8,14 @@ import { mount, flushSync } from 'svelte';
 import Button from './Button.svelte.js';
 import Select from './Select.svelte.js';
 import TextInput from './TextInput.svelte.js';
+import ButtonCancel from './ButtonCancel.svelte.js';
+import ButtonUndo from './ButtonUndo.svelte.js';
+import ButtonAdd from './ButtonAdd.svelte.js';
+import ButtonDownload from './ButtonDownload.svelte.js';
+import ButtonUpload from './ButtonUpload.svelte.js';
+import ButtonUp from './ButtonUp.svelte.js';
+import ButtonDown from './ButtonDown.svelte.js';
+import ButtonSettings from './ButtonSettings.svelte.js';
 
 const { ok, eq, results } = collector();
 
@@ -38,6 +46,31 @@ for (const [name, Comp, props, selector, own] of CASES) {
    const two = render(Comp, { ...props, class: 'wide tall' }, selector);
    ok(`${name}: several class names at once`,
       two.classList.contains('wide') && two.classList.contains('tall'), two.className);
+}
+
+/* a round button already gives itself two classes - 'button' for the shape and 'button-...'
+   for the icon - and hands them to ButtonRound as an array. An extra one from the caller has
+   to land next to both of them, so the nesting has to survive */
+const ROUND = [
+   ['ButtonCancel',   ButtonCancel,   'button-cancel'],
+   ['ButtonUndo',     ButtonUndo,     'button-undo'],
+   ['ButtonAdd',      ButtonAdd,      'button-add'],
+   ['ButtonDownload', ButtonDownload, 'button-download'],
+   ['ButtonUpload',   ButtonUpload,   'button-upload'],
+   ['ButtonUp',       ButtonUp,       'button-up'],
+   ['ButtonDown',     ButtonDown,     'button-down'],
+   ['ButtonSettings', ButtonSettings, 'button-settings'],
+];
+
+for (const [name, Comp, icon] of ROUND) {
+   const plain = render(Comp, {}, 'button');
+   eq(`${name}: leaves no gap in the attribute when no extra class is given`,
+      /\s{2,}|^\s|\s$/.test(plain.getAttribute('class')), false);
+
+   const el = render(Comp, { class: 'extra' }, 'button');
+   ok(`${name}: an extra class is added`, el.classList.contains('extra'), el.className);
+   ok(`${name}: next to the one which picks the icon`, el.classList.contains(icon), el.className);
+   ok(`${name}: and next to the round button's own`, el.classList.contains('button'), el.className);
 }
 
 /* 'className' was the name until 3.0.0 - it must not quietly keep half working */

@@ -323,6 +323,10 @@ Round icon buttons: `ButtonCancel`, `ButtonUndo`, `ButtonAdd`, `ButtonDownload`,
 | `title` | *(varies)* | Accessible title |
 | `disable` | `false` | Disabled state |
 | `onclick` | | Click callback |
+| `class` | `''` | Extra CSS class, see [Button](#button) |
+
+The extra class lands next to the two the button gives itself — `button` for the round shape
+and `button-add`, `button-cancel` and so on for the icon, which is what the icon is selected by.
 
 ### Spinner
 
