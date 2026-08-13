@@ -1,5 +1,25 @@
 # Release notes
 
+## 3.0.0 (2026-08-13)
+
+**Breaking**
+
+* The extra class name of `Select` and `TextInput` is given as `class` now and not as
+  `className` — see [Upgrading from 2.x](README.md#upgrading-from-2x). A property the
+  components do not know is ignored without a word, so a `className` left behind takes the
+  styling with it and says nothing.
+
+**Added**
+
+* `Button` takes a `class` as well, so a single button can be restyled without a wrapper
+  element around it. It is added next to the built in `button` class, which keeps its styling.
+
+Svelte scopes styles to the component they are written in, and a class name passed as a
+property does not carry that scope with it — a rule for it has to be written as `:global(...)`
+or the compiler drops it as unused. This is not new, but `class` is now on three controls
+rather than hidden on two, so it is worth saying once: see the [Button](README.md#button)
+section for the example.
+
 ## 2.2.0 (2026-08-13)
 
 **Added**
