@@ -125,4 +125,15 @@ function render(props = {}) {
    eq('valuenow follows the value', r.el.getAttribute('aria-valuenow'), '6');
 }
 
+/* the modifier class matches no rule in the package and is documented as a hook for the
+   consumer's own CSS, which makes it look like dead code to anyone tidying up - it is pinned
+   here so that removing it fails rather than silently breaking somebody's stylesheet */
+{
+   const r = render({ min: 1, max: 20, value: 5 });
+   ok('the container class is shared with Range',
+      r.el.classList.contains('range-slider-container'), r.el.className);
+   ok('and the discrete slider carries a modifier of its own',
+      r.el.classList.contains('range-slider-container_discrete'), r.el.className);
+}
+
 report(test, assert, results);

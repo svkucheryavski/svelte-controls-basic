@@ -134,6 +134,25 @@ Like `Range` but for discrete (integer) values with a striped background showing
 | `ariaLabel` | `null` | Accessible name for the slider, see [Naming controls](#naming-controls) |
 | `onchange` | `null` | Callback when value changes |
 
+`RangeDiscrete` and `Range` share the class `range-slider-container`, so a rule written for one
+hits both. `RangeDiscrete` carries `range-slider-container_discrete` as well, and no rule in the
+package uses it — it is there for you, to reach the discrete slider on its own:
+
+```svelte
+<style>
+   /* both sliders */
+   :global(.range-slider-container) { border-radius: 0; }
+   /* the discrete one only */
+   :global(.range-slider-container_discrete) { height: 2em; }
+   /* the continuous one only */
+   :global(.range-slider-container:not(.range-slider-container_discrete)) { height: 1em; }
+</style>
+```
+
+The striped track is drawn with an inline `background`, because the stripe width follows `step`
+and the range. An inline style beats a stylesheet, so restyling the track means overriding it
+with `background: ... !important` — the rest of the container is ordinary CSS.
+
 ### Select
 
 Selector shown as a row of buttons.

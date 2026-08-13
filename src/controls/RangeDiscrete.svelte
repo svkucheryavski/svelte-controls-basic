@@ -156,6 +156,10 @@
 
 </script>
 
+<!-- no rule in the package matches 'range-slider-container_discrete', and that is deliberate:
+     this slider and 'Range' share 'range-slider-container', so a rule written for one hits
+     both, and the modifier is the only way to reach the discrete one on its own. It is
+     documented as such - do not remove it as dead code -->
 <div
    role="slider"
    class="range-slider-container range-slider-container_discrete"
