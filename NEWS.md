@@ -1,5 +1,32 @@
 # Release notes
 
+## 3.1.0 (2026-08-14)
+
+**Added**
+
+* The eight round buttons — `ButtonCancel`, `ButtonUndo`, `ButtonAdd`, `ButtonDownload`,
+  `ButtonUpload`, `ButtonUp`, `ButtonDown`, `ButtonSettings` — take a `class` as well. They
+  were the one place `class` was missing after 3.0.0: each passed its own icon class down and
+  accepted nothing from the caller, so `<ButtonAdd class="wide"/>` did nothing and said nothing
+  about it. What you give is added next to the icon class, not instead of it.
+
+**Fixed**
+
+* `Switch` no longer compiles with a warning. It kept the label shown by its inner `Select` in
+  state and rewrote it from an `$effect`, seeding it from `value` and `options` outside any
+  reactive scope — which Svelte flagged as capturing only their initial values. The label is
+  derived from the value now and the state is gone, so there is nothing left to fall out of
+  step. Behaviour is unchanged. This package ships its source, so a warning of ours is a
+  warning in your build; there are none left in `src/controls`.
+
+**Documentation**
+
+* The `RangeDiscrete` section explains how to reach the discrete slider from your own CSS.
+  It shares the class `range-slider-container` with `Range`, so a rule written for one hits
+  both; the extra `range-slider-container_discrete` matches no rule in the package and is
+  there for you. The striped track is an inline `background`, because the stripe width follows
+  `step` and the range, so overriding it needs `!important`.
+
 ## 3.0.0 (2026-08-13)
 
 **Breaking**
