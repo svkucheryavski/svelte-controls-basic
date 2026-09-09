@@ -1,5 +1,23 @@
 # Release notes
 
+## 3.2.0 (2026-09-09)
+
+**Fixed**
+
+* `FileSelector` lets you choose the same file twice. Chrome fires no `change` event when the
+  dialog returns the file the input already holds, so a file edited on disk could not be loaded
+  again without clearing the selector first. The input is now emptied after every selection
+  — the label shows the bound `file`, not the input, so nothing visible changes — and each
+  choice fires. In Firefox the input's `FileList` is live and is emptied with it, so the files
+  are copied out first.
+
+**Changed**
+
+* Several files chosen from the dialog arrive as a plain array of `File`s, as they always did
+  from a drop; before, the dialog handed over the browser's `FileList`. `length`, indexing,
+  `for … of` and `Array.from` work as before; `instanceof FileList`, `.item()` and assigning the
+  value to another input's `.files` do not. A single file is still the `File` itself.
+
 ## 3.1.0 (2026-08-14)
 
 **Added**
