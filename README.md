@@ -287,10 +287,10 @@ File upload trigger with visual feedback.
 
 | Property | Default | Description |
 |---|---|---|
-| `file` | | Selected file (bindable) |
+| `file` | `undefined` | Selected file (bindable): a `File` for one, an array of `File`s for several, `null` after clearing |
 | `message` | `'Select CSV file with dataset'` | Prompt text |
 | `acceptType` | `'.csv'` | Accepted file types |
-| `multiple` | `false` | Allow multiple files |
+| `multiple` | `false` | Allow several files; `file` becomes an array when more than one is chosen |
 | `disable` | `false` | Disabled state |
 
 The control is a real `<input type="file">` wrapped in a label, so it behaves natively for the

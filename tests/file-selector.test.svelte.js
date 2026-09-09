@@ -29,6 +29,17 @@ function render(props = {}) {
       target, st, box,
       /* jsdom has no DataTransfer, and the component only ever reads '.files' off it */
       drop: (...files) => fire('drop', { dataTransfer: { files } }),
+      /* jsdom's own FileList cannot be filled, so the list is put on the input by hand; the
+         value setter empties it the way Firefox's live FileList is emptied. The list is
+         returned so a scenario can see that the input was cleared */
+      pick: (...files) => {
+         const input = target.querySelector('input');
+         Object.defineProperty(input, 'files', { configurable: true, value: files });
+         Object.defineProperty(input, 'value', { configurable: true, set() { files.length = 0; } });
+         input.dispatchEvent(new window.Event('change', { bubbles: true }));
+         flushSync();
+         return files;
+      },
       dragenter: () => fire('dragenter'),
       dragleave: () => fire('dragleave'),
       message: () => target.querySelector('.error')?.textContent ?? null,
@@ -110,6 +121,30 @@ function render(props = {}) {
    const r = render({ acceptType: '.csv', multiple: true });
    r.drop(file('only.csv'));
    ok('a single file is not wrapped in an array', r.st.f instanceof window.File, String(r.st.f));
+}
+
+// ---------------------------------------------------------------- choosing from the dialog
+{
+   const r = render({ acceptType: '.csv' });
+   const f = file('data.csv');
+   const list = r.pick(f);
+   eq('a file chosen from the dialog is taken', r.st.f, f);
+   eq('and the name is shown', r.text(), 'data.csv');
+   eq('the input is cleared, so the same file can be chosen again', list.length, 0);
+}
+{
+   const r = render({ acceptType: '.csv' });
+   r.pick(file('first.csv'));
+   const again = file('first.csv');
+   r.pick(again);
+   eq('choosing the same file again hands over the new one', r.st.f, again);
+}
+{
+   const r = render({ acceptType: '.csv', multiple: true });
+   const a = file('a.csv'), b = file('b.csv');
+   r.pick(a, b);
+   ok('several files from the dialog arrive as a plain array', Array.isArray(r.st.f));
+   ok('and were copied out before the input was cleared', r.st.f?.[0] === a && r.st.f?.[1] === b);
 }
 
 // ---------------------------------------------------------------- disabled

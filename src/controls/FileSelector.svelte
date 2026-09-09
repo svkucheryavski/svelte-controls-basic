@@ -1,8 +1,10 @@
 <!--
-@component File selector with icons an text. Supports both click-to-browse and drag-and-drop.
+@component File selector with icon and text. Supports both click-to-browse and drag-and-drop.
 
    Main properties:
-   - `file` - bindable property to get the selected file
+   - `file` - bindable property to get the selected file: a `File` for one, an array of `File`s
+     when `multiple` is set and several were chosen, `null` after the selection is cleared
+   - `multiple` - if `true` several files can be chosen at once, default: `false`.
    - `message` - message text to show on the selector, default: `'Select CSV file with dataset'`.
    - `acceptType` - pattern - which files to accept, default: `'.csv'`.
    - `disable` - if `true` the selector does not react to any input, default: `false`.
@@ -22,18 +24,19 @@
    let rejected = $state('');
    let rejectTimer;
 
-   /* set file from a FileList */
+   /* set file from an array of Files */
    function setFiles(files) {
-      if (files && files.length > 0) {
-         file = files.length === 1 ? files[0] : files;
-      } else {
-         file = null;
-      }
+      file = files.length === 0 ? null : files.length === 1 ? files[0] : files;
    }
 
    /* change value for 'file' parameter when user selects or deselects file */
    function changeStatus() {
-      setFiles(fileInput?.files);
+      // copied first: the input's FileList is live in some browsers and is emptied with it below
+      const files = Array.from(fileInput.files);
+      setFiles(files);
+      // the input is cleared after every selection, so choosing the same file again fires a change
+      // event; an input which still holds that file may not fire one
+      fileInput.value = null;
    }
 
    /* check if a file matches the acceptType pattern */
