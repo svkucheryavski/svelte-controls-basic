@@ -1,5 +1,22 @@
 # Release notes
 
+## 3.2.1 (unreleased)
+
+**Fixed**
+
+* `Switch` shows the value a parent bound to it puts back, as it did before 3.1.0. A parent
+  which refuses a change from inside `onchange`, as an app does when the action behind it fails,
+  got the old value back, but the switch went on showing the option just chosen, and choosing
+  that option again did nothing: the inner `Select` kept it as a copy of its own. The `Select`
+  is now bound to the switch's value, so it has no copy to keep.
+
+**Changed**
+
+* A `Switch` bound to a value Svelte cannot track can stop following clicks, for example one in a
+  `Widget` given a plain object. The first click still writes the value and calls `onchange`, but
+  the switch may go on showing the old option. Hold the value in `$state` and bind it all the way
+  down, e.g. `<Widget bind:value={w}>` with `w = $state({...})`.
+
 ## 3.2.0 (2026-09-09)
 
 **Fixed**

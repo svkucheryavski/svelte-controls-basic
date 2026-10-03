@@ -69,6 +69,26 @@ function render(props = {}) {
    eq('and says nothing', JSON.stringify(s.seen), '[]');
 }
 
+// ----------------------------- the parent puts the value back from inside onchange
+{
+   // a parent which refuses the change, as an app does when the action behind it fails
+   const target = document.createElement('div');
+   document.body.appendChild(target);
+   const st = $state({ v: false });
+   mount(Switch, { target, props: {
+      options: ['off', 'on'],
+      onchange: () => { st.v = false; },
+      get value() { return st.v; }, set value(x) { st.v = x; },
+   } });
+   flushSync();
+   const btns = [...target.querySelectorAll('button')];
+   btns[1].click();
+   flushSync();
+   eq('a value put back in onchange stays put back', st.v, false);
+   eq('and the selection shows it',
+      btns.find(b => b.getAttribute('aria-checked') === 'true')?.textContent.trim(), 'off');
+}
+
 // ----------------------------------------------------------- options of wrong size
 {
    const s = render({ value: false, options: ['only one'] });

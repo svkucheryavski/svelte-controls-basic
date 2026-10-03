@@ -36,7 +36,9 @@
       no state of its own to fall out of step */
    const selectValue = $derived(value ? options[1] : options[0]);
 
-   // sync user selection → value (via Select's onchange, avoiding circular $effect)
+   // a choice made in the Select reaches the value through the binding below, never a copy the
+   // Select keeps: with a plain prop, a value the parent put back inside 'onchange' left the
+   // Select showing the option the user clicked
    function handleSelect(selected) {
       const newValue = selected === options[1];
       if (Object.is(newValue, value)) return;
@@ -48,5 +50,5 @@
 {#if cleanOptions}
 <!-- the Select finds a Container's label by itself, only an explicit name has to be
      handed down -->
-<Select options={cleanOptions} value={selectValue} {disable} {html} {ariaLabel} onchange={handleSelect} />
+<Select options={cleanOptions} bind:value={() => selectValue, handleSelect} {disable} {html} {ariaLabel} />
 {/if}
