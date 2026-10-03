@@ -1,6 +1,6 @@
 # Release notes
 
-## 3.2.1 (unreleased)
+## 3.2.1 (2026-10-03)
 
 **Fixed**
 
