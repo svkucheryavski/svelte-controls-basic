@@ -146,6 +146,11 @@ function render(props = {}) {
    ok('several files from the dialog arrive as a plain array', Array.isArray(r.st.f));
    ok('and were copied out before the input was cleared', r.st.f?.[0] === a && r.st.f?.[1] === b);
 }
+{
+   const r = render({ acceptType: '.csv' });
+   eq('the input has tabindex 0, which Safari\'s default Tab needs to stop on it',
+      r.target.querySelector('input').getAttribute('tabindex'), '0');
+}
 
 // ---------------------------------------------------------------- disabled
 {

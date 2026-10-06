@@ -97,10 +97,11 @@
         role="button", which makes everything inside it presentational - the reset button was
         then unreachable for a screen reader. Here the input only gets clipped away, so it
         keeps its own keyboard behaviour, its accessible name and its disabled state, and the
-        reset button stays a separate stop for both keyboard and screen reader -->
+        reset button stays a separate stop for both keyboard and screen reader. tabindex="0"
+        because Safari's default Tab skips a file input without one -->
    <label>
       <input onchange={changeStatus} bind:this={fileInput} type="file" accept={acceptType}
-         disabled={disable} multiple={multiple}>
+         disabled={disable} multiple={multiple} tabindex="0">
       <span>{ file ? (file.length > 1 ? `Selected ${file.length} files`: file.name) : message }</span>
    </label>
 

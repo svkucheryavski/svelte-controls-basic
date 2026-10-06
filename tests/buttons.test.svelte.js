@@ -33,6 +33,8 @@ function render(Comp, props = {}) {
       b.el.getAttribute('type'), 'button');
    b.el.click(); flushSync();
    eq('it calls back when clicked', b.clicks.length, 1);
+   eq('it has tabindex 0, which Safari\'s default Tab needs to stop on it',
+      b.el.getAttribute('tabindex'), '0');
 }
 {
    const b = render(Button, { text: 'Run' });
@@ -70,6 +72,7 @@ for (const [name, Comp, cls, title] of ROUND) {
    eq(`${name}: has a name for a screen reader`, b.el.getAttribute('aria-label'), title);
    eq(`${name}: and a tooltip saying the same`, b.el.getAttribute('title'), title);
    eq(`${name}: is type=button`, b.el.getAttribute('type'), 'button');
+   eq(`${name}: has tabindex 0, for Safari's default Tab`, b.el.getAttribute('tabindex'), '0');
 
    b.el.click(); flushSync();
    eq(`${name}: calls back when clicked`, b.clicks.length, 1);

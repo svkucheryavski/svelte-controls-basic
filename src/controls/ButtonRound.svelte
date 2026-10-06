@@ -8,12 +8,14 @@
    - `disable` - if `true` the button is disabled, default: `false`.
 
    The class name is what selects the icon, see the eight buttons built on this one.
+   It has `tabindex="0"`: Safari's default Tab skips a button without an explicit tabindex.
 -->
 <script>
    let {title, class: className = '', disable = false, onclick} = $props();
 </script>
 
-<button type="button" {onclick} {title} aria-label={title} disabled={disable} class={['button', className]}></button>
+<button type="button" {onclick} {title} aria-label={title} disabled={disable} tabindex="0"
+   class={['button', className]}></button>
 
 <style>
    button {

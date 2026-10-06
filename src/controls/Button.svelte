@@ -11,6 +11,8 @@
    The default type is `'button'` and not `'submit'`, so that a button placed inside a form
    does not submit it. Set `type="submit"` explicitly if that is what you need.
 
+   It has `tabindex="0"`: Safari's default Tab skips a button without an explicit tabindex.
+
    Svelte scopes styles to the component they are written in, and a class name passed as a
    property does not carry that scope - write the rule as `:global(.my-class)` or it will be
    dropped as unused. The built in rules are scoped and therefore more specific than a bare
@@ -20,7 +22,8 @@
    let {text = 'button', type = 'button', disable = false, onclick, class: className = ''} = $props();
 </script>
 
-<button class={['button', className]} {type} {onclick} disabled={disable}>{text}</button>
+<button class={['button', className]} {type} {onclick} disabled={disable}
+   tabindex="0">{text}</button>
 
 <style>
    button {

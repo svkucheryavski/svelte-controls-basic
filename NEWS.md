@@ -1,5 +1,13 @@
 # Release notes
 
+## 3.2.2 (unreleased)
+
+**Fixed**
+
+* `Button`, the eight round buttons and the input of `FileSelector` are reachable with Tab in
+  Safari. By default Safari's Tab skips a button or a file input with no explicit `tabindex`, so
+  it went past them; they now have `tabindex="0"`.
+
 ## 3.2.1 (2026-10-03)
 
 **Fixed**
